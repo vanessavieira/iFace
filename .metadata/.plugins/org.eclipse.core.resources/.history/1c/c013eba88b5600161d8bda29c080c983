@@ -7,8 +7,13 @@ import javax.naming.CommunicationException;
 public class Management {
 
 	private static Management c_Management;
-	private ArrayList<Community> m_communities = new ArrayList<Community>();
-	private ArrayList<User> m_users = new ArrayList<User>();;
+	private ArrayList<Community> m_communities;
+	private ArrayList<User> m_users;
+
+	private Management() {
+		m_communities = new ArrayList<>();
+		m_users = new ArrayList<>();
+	}
 
 	public User getUserById(int id) {
 		User u = null;
@@ -23,7 +28,7 @@ public class Management {
 		return u;
 	}
 
-	public Community getCommunityById(int id) {
+	public Community getComunityById(int id) {
 		Community c = null;
 		if (m_communities.size() > 0) {
 			for (int i = 0; i < m_communities.size(); i++) {
@@ -49,7 +54,7 @@ public class Management {
 	}
 
 	public boolean removeCommunity(int cId) {
-		Community c = getCommunityById(cId);
+		Community c = getComunityById(cId);
 		if (!c.kill())
 			return false;
 		return m_communities.remove(c);
@@ -63,7 +68,7 @@ public class Management {
 	}
 
 	public boolean addCommunity(Community c) {
-		if (getCommunityById(c.getId()) != null)
+		if (getComunityById(c.getId()) != null)
 			return false;
 		return m_communities.add(c);
 	}

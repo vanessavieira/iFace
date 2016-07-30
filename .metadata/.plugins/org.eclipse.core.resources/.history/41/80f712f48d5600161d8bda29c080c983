@@ -10,11 +10,11 @@ public class Management {
 	private ArrayList<Community> m_communities = new ArrayList<Community>();
 	private ArrayList<User> m_users = new ArrayList<User>();;
 
-	public User getUserById(int id) {
+	public User getUserById(int user) {
 		User u = null;
 		if (m_users.size() > 0) {
 			for (int i = 0; i < m_users.size(); i++) {
-				if (m_users.get(i).getId() == id) {
+				if (m_users.get(i).getId() == user) {
 					u = m_users.get(i);
 					break;
 				}

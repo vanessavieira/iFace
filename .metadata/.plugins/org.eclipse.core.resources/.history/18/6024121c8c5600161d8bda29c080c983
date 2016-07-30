@@ -7,8 +7,13 @@ import javax.naming.CommunicationException;
 public class Management {
 
 	private static Management c_Management;
-	private ArrayList<Community> m_communities = new ArrayList<Community>();
-	private ArrayList<User> m_users = new ArrayList<User>();;
+	private ArrayList<Community> m_communities;
+	private ArrayList<User> m_users;
+
+	private Management() {
+		m_communities = new ArrayList<>();
+		m_users = new ArrayList<>();
+	}
 
 	public User getUserById(int id) {
 		User u = null;

@@ -1,0 +1,57 @@
+package iFace;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Community {
+	protected String name;
+	protected String info;
+	protected String owner;
+	protected Integer id;
+	protected ArrayList<User> users = new ArrayList<User>();
+
+	public Comunity(String name, String info, int owner) {
+		this.name = name;
+		this.info = info;
+		this.owner = owner;
+		Random generator = new Random();
+		this.id = generator.nextInt(8999999) + 101000000;
+		Manager.getInstanceOf().addCommunity(this);
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
+	public Integer getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Integer owner) {
+		this.owner = owner;
+	}
+
+	public boolean addUser(Integer newUser) {
+		return users.add(newUser);
+	}
+}

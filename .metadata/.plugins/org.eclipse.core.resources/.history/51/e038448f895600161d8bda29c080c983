@@ -7,14 +7,19 @@ import javax.naming.CommunicationException;
 public class Management {
 
 	private static Management c_Management;
-	private ArrayList<Community> m_communities = new ArrayList<Community>();
-	private ArrayList<User> m_users = new ArrayList<User>();;
+	private ArrayList<Community> m_communities;
+	private ArrayList<User> m_users;
+
+	private Management() {
+		m_communities = new ArrayList<>();
+		m_users = new ArrayList<>();
+	}
 
 	public User getUserById(int id) {
 		User u = null;
 		if (m_users.size() > 0) {
 			for (int i = 0; i < m_users.size(); i++) {
-				if (m_users.get(i).getId() == id) {
+				if (m_users.get(i).getId(id) == id) {
 					u = m_users.get(i);
 					break;
 				}
@@ -23,11 +28,11 @@ public class Management {
 		return u;
 	}
 
-	public Community getCommunityById(int id) {
+	public Community getComunityById(int id) {
 		Community c = null;
 		if (m_communities.size() > 0) {
 			for (int i = 0; i < m_communities.size(); i++) {
-				if (m_communities.get(i).getId() == id) {
+				if (m_communities.get(i).getId(id) == id) {
 					c = m_communities.get(i);
 					break;
 				}
@@ -36,6 +41,7 @@ public class Management {
 		return c;
 	}
 
+	// Singleton design pattern
 	public static Management getInstanceOf() {
 		if (c_Management == null)
 			c_Management = new Management();
@@ -43,13 +49,13 @@ public class Management {
 	}
 
 	public boolean addUser(User u) {
-		if (getUserById(u.getId()) != null)
+		if (getUserById(u.getId(id)) != null)
 			return false;
 		return m_users.add(u);
 	}
 
 	public boolean removeCommunity(int cId) {
-		Community c = getCommunityById(cId);
+		Community c = getComunityById(cId);
 		if (!c.kill())
 			return false;
 		return m_communities.remove(c);
@@ -63,7 +69,7 @@ public class Management {
 	}
 
 	public boolean addCommunity(Community c) {
-		if (getCommunityById(c.getId()) != null)
+		if (getComunityById(c.getId(id)) != null)
 			return false;
 		return m_communities.add(c);
 	}

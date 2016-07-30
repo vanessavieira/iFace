@@ -12,13 +12,12 @@ public class Main {
 	public static void main(String[] args) {
 		int firstChoice = 0;
 
-		while (firstChoice != 4) {
+		while (firstChoice != 3) {
 			// first menu
 			System.out.print("Welcome to iFace!: ");
 			System.out.print("1. Login |");
 			System.out.print(" 2. Register now |");
-			System.out.print(" 3. Show activities |");
-			System.out.print(" 4. Close iFace");
+			System.out.print(" 3. Close iFace");
 
 			input = new Scanner(System.in);
 			firstChoice = input.nextInt();
@@ -27,7 +26,7 @@ public class Main {
 
 			// login
 			if (firstChoice == 1) {
-				
+				Management.getInstanceOf().print();
 			}
 			// register a new user
 			else if (firstChoice == 2) {
@@ -47,9 +46,6 @@ public class Main {
 				System.out.println("Password:");
 				user.setPassword(input.nextLine());
 
-			}
-			else if (firstChoice == 3) {
-				Management.getInstanceOf().print();
 			}
 		}
 	}
