@@ -44,31 +44,24 @@ public class Management {
 
 	public boolean addUser(User u) {
 		if (getUserById(u.getId()) != null)
-			return false;
+			return false;	
 		return m_users.add(u);
 	}
 	
-	public boolean removeUser(int uId) {
-		User u = getUserById(uId);
-		if (!u.kill())
-			return false;
-		return m_users.remove(u);
-	}
-
 	public boolean loginCheck(String login, String password) {
-		for (int i = 0; i < m_users.size(); i++) {
-			if (m_users.get(i).getLogin().compareTo(login) == 0
-					&& m_users.get(i).getPassword().compareTo(password) == 0) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean addCommunity(Community c) {
-		if (getCommunityById(c.getId()) != null)
-			return false;
-		return m_communities.add(c);
+		for(int i = 0; i < m_users.size(); i++)
+        {
+            if(m_users.get(i).getLogin().compareTo(login) == 0 && m_users.get(i).getPassword().compareTo(password) == 0)
+            {
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
+        }
+
 	}
 
 	public boolean removeCommunity(int cId) {
@@ -76,7 +69,20 @@ public class Management {
 		if (!c.kill())
 			return false;
 		return m_communities.remove(c);
-	}	
+	}
+
+	public boolean removeUser(int uId) {
+		User u = getUserById(uId);
+		if (!u.kill())
+			return false;
+		return m_users.remove(u);
+	}
+
+	public boolean addCommunity(Community c) {
+		if (getCommunityById(c.getId()) != null)
+			return false;
+		return m_communities.add(c);
+	}
 
 	public boolean sendMessage(String message, int userID) {
 		User u = getUserById(userID);

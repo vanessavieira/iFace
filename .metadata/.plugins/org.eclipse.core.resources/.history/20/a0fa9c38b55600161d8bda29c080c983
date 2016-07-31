@@ -76,8 +76,6 @@ public class Main {
 					// remove account
 					else if (secondChoice == 5) {
 						manager.removeUser(uId);
-						System.out.println("You have removed your account!\n");
-						break;
 					}
 					// log out
 					else if (secondChoice == 6) {

@@ -1,0 +1,79 @@
+package iFace;
+
+import java.util.Scanner;
+import iFace.Management;
+import iFace.User;
+
+public class Main {
+
+	private static Scanner input;
+	private static Scanner scan;
+
+	public static void main(String[] args) {
+		int firstChoice = 0;
+
+		while (firstChoice != 4) {
+			//first menu
+			System.out.print("Welcome to iFace!: ");
+			System.out.print("1. Login |");
+			System.out.print(" 2. Register now |");
+			System.out.print(" 3. Show activities |");
+			System.out.print(" 4. Close iFace");
+
+			input = new Scanner(System.in);
+			firstChoice = input.nextInt();
+
+			input.nextLine();
+
+			// login
+			if (firstChoice == 1) {
+				String pass;
+				String user;
+				
+				System.out.println("Username:");
+				user = input.nextLine();
+				System.out.println("Password:");
+				pass = input.nextLine();
+				
+				for (User userr : m_users) {
+					if (user.equals(userr.getLogin())
+							&& pass.equals(userr.getPassword())) {
+						System.out.println("Bem-vindo ao Sistema de Gerenciamento!\n");
+						break;
+					}
+				}
+
+
+				if(pass.equals("123") && user.equals("bob") ){
+				    System.out.println("Credentials Accepted.");
+				}
+				else{
+				    System.err.println("Please try again.");
+				} 
+			}
+			// register a new user
+			else if (firstChoice == 2) {
+				scan = new Scanner(System.in);
+
+				User user = new User(null, null, null, null);
+
+				System.out.println("Name:");
+				user.setName(input.nextLine());
+
+				System.out.println("user name:");
+				user.setLogin(input.nextLine());
+
+				System.out.println("Email:");
+				user.setEmail(input.nextLine());
+
+				System.out.println("Password:");
+				user.setPassword(input.nextLine());		
+
+			}
+			else if (firstChoice == 3) {
+				Management.getInstanceOf().print();
+			}
+		}
+	}
+
+}

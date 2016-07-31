@@ -12,8 +12,6 @@ public class Main {
 	public static void main(String[] args) {
 		int firstChoice = 0;
 		int secondChoice = 0;
-		int uId = 0;
-		
 		Management manager = new Management();
 
 		while (firstChoice != 4) {
@@ -56,31 +54,17 @@ public class Main {
 					input = new Scanner(System.in);
 					secondChoice = input.nextInt();
 					input.nextLine();
-					
-					// show profile
 					if (secondChoice == 1) {
 
-					} 
-					// show communities
-					else if (secondChoice == 2) {
+					} else if (secondChoice == 2) {
 
-					}
-					// show friends
-					else if (secondChoice == 3) {
+					} else if (secondChoice == 3) {
 
-					}
-					// show messages
-					else if (secondChoice == 4) {
+					} else if (secondChoice == 4) {
 
-					}
-					// remove account
-					else if (secondChoice == 5) {
-						manager.removeUser(uId);
-						System.out.println("You have removed your account!\n");
-						break;
-					}
-					// log out
-					else if (secondChoice == 6) {
+					} else if (secondChoice == 5) {
+
+					} else if (secondChoice == 6) {
 						System.out.println("You are now logged out!\n");
 					}
 
@@ -106,10 +90,7 @@ public class Main {
 				user.setPassword(input.nextLine());
 
 				System.out.println("You are now registered!\n");
-				
 				manager.addUser(user);
-				
-				uId = user.getId();
 
 			}
 			// print of the system

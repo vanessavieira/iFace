@@ -48,8 +48,8 @@ public class Management {
 		return m_users.add(u);
 	}
 	
-	public boolean removeUser(int uId) {
-		User u = getUserById(uId);
+	public boolean removeUser(User u) {
+		//User u = getUserById(uId);
 		if (!u.kill())
 			return false;
 		return m_users.remove(u);
