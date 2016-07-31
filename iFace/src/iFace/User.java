@@ -8,7 +8,6 @@ public class User {
 	protected String login;
 	protected String email;
 	protected String password;
-	//protected String profile;
 	protected Integer id;
 	protected ArrayList<String> messages = new ArrayList<String>();
 	protected ArrayList<Integer> communities = new ArrayList<Integer>();
@@ -63,14 +62,6 @@ public class User {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	//public String getProfile() {
-	//	return profile;
-	//}
-
-	//public void setProfile(String profile) {
-	//	this.profile = profile;
-	//}
 
 	public User getFriendById(int fId) {
 		User u = null;
@@ -182,6 +173,7 @@ public class User {
 		System.out.println("USERNAME:" + this.login);
 		System.out.println("EMAIL:" + this.email);
 		System.out.println("ID:" + this.id);
+		System.out.println("\n");
 	}
 
 	public void printMessages() {

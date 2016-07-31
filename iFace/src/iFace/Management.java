@@ -43,7 +43,6 @@ public class Management {
 	}
 
 	public boolean addUser(User user) {
-		//User u = getUserById(user);
 		if (getUserById(user.getId()) != null)
 			return false;
 		return m_users.add(user);
@@ -96,6 +95,27 @@ public class Management {
 			}
 		}
 	}
+	
+	public void printUsers(){
+		Management.getInstanceOf();
+		System.out.println(c_Management.m_users.size() > 0 ? "\nUSERS:\n"
+				: "NO USERS");
+			for (int i = 0; i < c_Management.m_users.size(); i++) {
+				c_Management.m_users.get(i).printProfile();		
+			}
+	}
+	
+	public void printFriends(int id){
+		Management.getInstanceOf();
+		//System.out.println(c_Management.m_users.size() > 0 ? "\nFRIENDS:\n"
+				//: "YOU HAVE NO FRIENDS");
+			for (int i = 0; i < c_Management.m_users.size(); i++) {
+				if (m_users.get(i).getId() == id) {
+					c_Management.m_users.get(i).printFriends();
+				}		
+			}
+	}
+	
 
 	public void print() {
 		Management.getInstanceOf();
@@ -103,7 +123,7 @@ public class Management {
 				: "NO USERS");
 		for (int i = 0; i < c_Management.m_users.size(); i++){
 			c_Management.m_users.get(i).printProfile();
-			c_Management.m_users.get(i).printMessages();
+			//c_Management.m_users.get(i).printMessages();
 			c_Management.m_users.get(i).printCommunities();
 			c_Management.m_users.get(i).printFriends();
 		}
@@ -112,5 +132,6 @@ public class Management {
 						: "NO COMMUNITIES");
 		for (int i = 0; i < c_Management.m_communities.size(); i++)
 			c_Management.m_communities.get(i).print();
+		System.out.println("-------------------------------------------------");
 	}
 }
