@@ -42,10 +42,11 @@ public class Management {
 		return c_Management;
 	}
 
-	public boolean addUser(User u) {
-		if (getUserById(u.getId()) != null)
+	public boolean addUser(User user) {
+		//User u = getUserById(user);
+		if (getUserById(user.getId()) != null)
 			return false;
-		return m_users.add(u);
+		return m_users.add(user);
 	}
 	
 	public boolean removeUser(int uId) {
@@ -55,14 +56,14 @@ public class Management {
 		return m_users.remove(u);
 	}
 
-	public boolean loginCheck(String login, String password) {
+	public int loginCheck(String login, String password) {
 		for (int i = 0; i < m_users.size(); i++) {
 			if (m_users.get(i).getLogin().compareTo(login) == 0
 					&& m_users.get(i).getPassword().compareTo(password) == 0) {
-				return true;
+				return m_users.get(i).getId();
 			}
 		}
-		return false;
+		return -1;
 	}
 	
 	public boolean addCommunity(Community c) {
@@ -84,13 +85,28 @@ public class Management {
 			return false;
 		return u.addMessage(message);
 	}
+	
+	public void printUserById(int id){
+		Management.getInstanceOf();
+		if (m_users.size() > 0) {
+			for (int i = 0; i < m_users.size(); i++) {
+				if (m_users.get(i).getId() == id) {
+					c_Management.m_users.get(i).printProfile();
+				}
+			}
+		}
+	}
 
 	public void print() {
 		Management.getInstanceOf();
-		System.out.println(c_Management.m_users.size() > 0 ? "USERS:"
+		System.out.println(c_Management.m_users.size() > 0 ? "\nUSERS:\n"
 				: "NO USERS");
-		for (int i = 0; i < c_Management.m_users.size(); i++)
-			c_Management.m_users.get(i).print();
+		for (int i = 0; i < c_Management.m_users.size(); i++){
+			c_Management.m_users.get(i).printProfile();
+			c_Management.m_users.get(i).printMessages();
+			c_Management.m_users.get(i).printCommunities();
+			c_Management.m_users.get(i).printFriends();
+		}
 		System.out
 				.println(c_Management.m_communities.size() > 0 ? "COMMUNITIES:"
 						: "NO COMMUNITIES");

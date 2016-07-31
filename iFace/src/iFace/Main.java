@@ -12,8 +12,11 @@ public class Main {
 	public static void main(String[] args) {
 		int firstChoice = 0;
 		int secondChoice = 0;
+		int thirdChoice = 0;
+		int log = 0;
 		int uId = 0;
-		
+		// String profile = null;
+
 		Management manager = new Management();
 
 		while (firstChoice != 4) {
@@ -30,21 +33,26 @@ public class Main {
 
 			// login
 			if (firstChoice == 1) {
-				String pass;
+				secondChoice = 0;
+				thirdChoice = 0;
 				String user;
+				String pass;
 
-				System.out.println("\nUsername:");
+				System.out.println("\nUSERNAME:");
 				user = input.nextLine();
-				System.out.println("Password:");
+				System.out.println("PASSWORD:");
 				pass = input.nextLine();
 
-				if (manager.loginCheck(user, pass) == true) {
+				if (manager.loginCheck(user, pass) != -1) {
 					System.out.println("You are now logged in!\n");
+					uId = manager.loginCheck(user, pass);
+					log = 1;
 				} else {
 					System.err.println("Username or password incorrect\n");
+					log = 0;
 				}
 
-				while (secondChoice != 6) {
+				while (secondChoice != 6 && log == 1) {
 					System.out.print("iFace: ");
 					System.out.print("1. Profile |");
 					System.out.print(" 2. Communities |");
@@ -56,11 +64,28 @@ public class Main {
 					input = new Scanner(System.in);
 					secondChoice = input.nextInt();
 					input.nextLine();
-					
+
 					// show profile
 					if (secondChoice == 1) {
+						
+						while (thirdChoice != 2) {
+							System.out.print("iFace: ");
+							System.out.println(" User Profile ");
+							Management.getInstanceOf().printUserById(uId);
+							System.out.println("\nDo you want to edit your info?");
+							System.out.println(" 1. Yes | 2. No");
+							
+							input = new Scanner(System.in);
+							thirdChoice = input.nextInt();
+							input.nextLine();		
+							
+							// edit profile
+							if (thirdChoice == 1){
+								System.out.println("heo");
+							}			
+						}
 
-					} 
+					}
 					// show communities
 					else if (secondChoice == 2) {
 
@@ -81,6 +106,7 @@ public class Main {
 					}
 					// log out
 					else if (secondChoice == 6) {
+						log = 0;
 						System.out.println("You are now logged out!\n");
 					}
 
@@ -93,23 +119,23 @@ public class Main {
 
 				User user = new User(null, null, null, null);
 
-				System.out.println("\nName:");
+				System.out.println("\nNAME:");
 				user.setName(input.nextLine());
 
-				System.out.println("Username:");
+				System.out.println("USERNAME:");
 				user.setLogin(input.nextLine());
 
-				System.out.println("Email:");
+				System.out.println("EMAIL:");
 				user.setEmail(input.nextLine());
 
-				System.out.println("Password:");
+				System.out.println("PASSWORD:");
 				user.setPassword(input.nextLine());
 
 				System.out.println("You are now registered!\n");
-				
-				manager.addUser(user);
-				
+
 				uId = user.getId();
+				// profile = user.getProfile();
+				manager.addUser(user);
 
 			}
 			// print of the system

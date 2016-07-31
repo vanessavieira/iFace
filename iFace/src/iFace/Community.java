@@ -6,9 +6,10 @@ import java.util.Random;
 public class Community {
 	protected String name;
 	protected String info;
-	protected int owner;
-	protected Integer id;
-	protected ArrayList<User> users = new ArrayList<User>();
+	protected Integer owner;
+	protected int id;
+	protected ArrayList<Integer> users = new ArrayList<Integer>();
+	protected Management manager = new Management();
 
 	public Community(String name, String info, int owner) {
 		this.name = name;
