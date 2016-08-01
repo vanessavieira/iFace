@@ -1,7 +1,6 @@
 package iFace;
 
 import java.util.Scanner;
-
 import iFace.Management;
 import iFace.User;
 
@@ -17,7 +16,7 @@ public class Main {
 		int fourthChoice = 0;
 		int log = 0;
 		int uId = 0;
-
+		// creating the manager system of iFace
 		Management manager = new Management();
 
 		while (firstChoice != 4) {
@@ -27,7 +26,8 @@ public class Main {
 			System.out.print(" 2. Register now |");
 			System.out.print(" 3. Show activities |");
 			System.out.print(" 4. Close iFace\n");
-			System.out.println("-------------------------------------------------");
+			System.out
+					.println("-------------------------------------------------");
 
 			input = new Scanner(System.in);
 			firstChoice = input.nextInt();
@@ -35,7 +35,6 @@ public class Main {
 
 			// login
 			if (firstChoice == 1) {
-				// initializing 
 				secondChoice = 0;
 				thirdChoice = 0;
 				String user;
@@ -48,12 +47,14 @@ public class Main {
 
 				if (manager.loginCheck(user, pass) != -1) {
 					System.out.println("You are now logged in!");
-					System.out.println("-------------------------------------------------");
+					System.out
+							.println("-------------------------------------------------");
 					uId = manager.loginCheck(user, pass);
 					log = 1;
 				} else {
 					System.err.println("Username or password incorrect");
-					System.out.println("-------------------------------------------------");
+					System.out
+							.println("-------------------------------------------------");
 					log = 0;
 				}
 
@@ -65,34 +66,37 @@ public class Main {
 					System.out.print(" 4. Messages |");
 					System.out.print(" 5. Remove account |");
 					System.out.print(" 6. Log out\n");
-					System.out.println("-------------------------------------------------");
+					System.out
+							.println("-------------------------------------------------");
 
 					input = new Scanner(System.in);
 					secondChoice = input.nextInt();
 					input.nextLine();
 
 					// show profile
-					if (secondChoice == 1) {			
+					if (secondChoice == 1) {
 						while (thirdChoice != 2) {
 							System.out.print("iFace: ");
 							System.out.println(" User Profile \n");
-							
-							// prints user 
+
+							// prints user
 							Management.getInstanceOf().printUserById(uId);
-							
-							System.out.print("\nDo you want to edit your info?");
+
+							System.out
+									.print("\nDo you want to edit your info?");
 							System.out.println(" 1. Yes | 2. No");
-							System.out.println("-------------------------------------------------");
-							
+							System.out
+									.println("-------------------------------------------------");
+
 							input = new Scanner(System.in);
 							thirdChoice = input.nextInt();
-							input.nextLine();		
-							
+							input.nextLine();
+
 							// edit profile
-							if (thirdChoice == 1){
-								
+							if (thirdChoice == 1) {
+
 								User userr = manager.getUserById(uId);
-								
+
 								System.out.println("\nNAME:");
 								userr.setName(input.nextLine());
 
@@ -102,7 +106,7 @@ public class Main {
 								System.out.println("EMAIL:");
 								userr.setEmail(input.nextLine());
 
-							}			
+							}
 						}
 
 					}
@@ -115,42 +119,49 @@ public class Main {
 						fourthChoice = 0;
 						System.out.print("iFace: ");
 						System.out.println(" User Friends \n");
-						
+						System.out
+								.println("-------------------------------------------------");
+
 						// prints user's friends
 						Management.getInstanceOf().printFriends(uId);
-						
-						while (fourthChoice != 2){
+
+						while (fourthChoice != 2) {
 							System.out.print("Do you want to add friends?");
 							System.out.print(" 1. Yes | 2. No\n");
-							System.out.println("-------------------------------------------------");
-							
+							System.out
+									.println("-------------------------------------------------");
+
 							input = new Scanner(System.in);
 							fourthChoice = input.nextInt();
 							input.nextLine();
-							
+
 							// shows users to add
-							if (fourthChoice == 1){
+							if (fourthChoice == 1) {
 								int friend = 0;
 								System.out.print("iFace: ");
 								System.out.println(" Find Friends \n");
-								
-								//prints users
+
+								// prints users
 								Management.getInstanceOf().printUsers();
-								
-								System.out.println("Write the id of your friend to add him/her: ");	
+
+								System.out
+										.println("Write the id of your friend to add him/her: ");
 								System.out.println("\nYOUR FRIEND'S ID:");
-								
+
 								input = new Scanner(System.in);
 								friend = input.nextInt();
 								input.nextLine();
-								
-								manager.getUserById(uId).addFriend(manager.getUserById(friend));
-								
-								System.out.println("Friend added successfully!");
-								System.out.println("-------------------------------------------------");
+
+								manager.getUserById(uId).addFriend(
+										manager.getUserById(friend));
+
+								System.out
+										.println("Friend added successfully!");
+								System.out
+										.println("-------------------------------------------------");
 							}
 						}
-						
+
 					}
 					// show messages
 					else if (secondChoice == 4) {
@@ -160,14 +171,16 @@ public class Main {
 					else if (secondChoice == 5) {
 						Management.getInstanceOf().removeUser(uId);
 						System.out.println("You have removed your account!");
-						System.out.println("-------------------------------------------------");
+						System.out
+								.println("-------------------------------------------------");
 						break;
 					}
 					// log out
 					else if (secondChoice == 6) {
 						log = 0;
 						System.out.println("You are now logged out!");
-						System.out.println("-------------------------------------------------");
+						System.out
+								.println("-------------------------------------------------");
 					}
 
 				}
@@ -192,20 +205,22 @@ public class Main {
 				user.setPassword(input.nextLine());
 
 				System.out.println("You are now registered!");
-				System.out.println("-------------------------------------------------");
+				System.out
+						.println("-------------------------------------------------");
 
 				uId = user.getId();
 				manager.addUser(user);
 
 			}
-			// print of the system
+			// print everything that happened in the system
 			else if (firstChoice == 3) {
 				Management.getInstanceOf().print();
 			}
 			// closing the system
 			else if (firstChoice == 4) {
 				System.err.println("Bye! See you soon!");
-				System.err.println("-------------------------------------------------");
+				System.err
+						.println("-------------------------------------------------");
 
 			}
 		}

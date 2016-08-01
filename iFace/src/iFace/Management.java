@@ -47,7 +47,7 @@ public class Management {
 			return false;
 		return m_users.add(user);
 	}
-	
+
 	public boolean removeUser(int uId) {
 		User u = getUserById(uId);
 		if (!u.kill())
@@ -64,7 +64,7 @@ public class Management {
 		}
 		return -1;
 	}
-	
+
 	public boolean addCommunity(Community c) {
 		if (getCommunityById(c.getId()) != null)
 			return false;
@@ -76,7 +76,7 @@ public class Management {
 		if (!c.kill())
 			return false;
 		return m_communities.remove(c);
-	}	
+	}
 
 	public boolean sendMessage(String message, int userID) {
 		User u = getUserById(userID);
@@ -84,8 +84,8 @@ public class Management {
 			return false;
 		return u.addMessage(message);
 	}
-	
-	public void printUserById(int id){
+
+	public void printUserById(int id) {
 		Management.getInstanceOf();
 		if (m_users.size() > 0) {
 			for (int i = 0; i < m_users.size(); i++) {
@@ -95,35 +95,34 @@ public class Management {
 			}
 		}
 	}
-	
-	public void printUsers(){
+
+	public void printUsers() {
 		Management.getInstanceOf();
 		System.out.println(c_Management.m_users.size() > 0 ? "\nUSERS:\n"
 				: "NO USERS");
-			for (int i = 0; i < c_Management.m_users.size(); i++) {
-				c_Management.m_users.get(i).printProfile();		
-			}
+		for (int i = 0; i < c_Management.m_users.size(); i++) {
+			c_Management.m_users.get(i).printProfile();
+		}
 	}
-	
-	public void printFriends(int id){
+
+	public void printFriends(int id) {
 		Management.getInstanceOf();
-		//System.out.println(c_Management.m_users.size() > 0 ? "\nFRIENDS:\n"
-				//: "YOU HAVE NO FRIENDS");
-			for (int i = 0; i < c_Management.m_users.size(); i++) {
-				if (m_users.get(i).getId() == id) {
-					c_Management.m_users.get(i).printFriends();
-				}		
+		// System.out.println(c_Management.m_users.size() > 0 ? "\nFRIENDS:\n"
+		// : "YOU HAVE NO FRIENDS");
+		for (int i = 0; i < c_Management.m_users.size(); i++) {
+			if (m_users.get(i).getId() == id) {
+				c_Management.m_users.get(i).printFriends();
 			}
+		}
 	}
-	
 
 	public void print() {
 		Management.getInstanceOf();
 		System.out.println(c_Management.m_users.size() > 0 ? "\nUSERS:\n"
 				: "NO USERS");
-		for (int i = 0; i < c_Management.m_users.size(); i++){
+		for (int i = 0; i < c_Management.m_users.size(); i++) {
 			c_Management.m_users.get(i).printProfile();
-			//c_Management.m_users.get(i).printMessages();
+			// c_Management.m_users.get(i).printMessages();
 			c_Management.m_users.get(i).printCommunities();
 			c_Management.m_users.get(i).printFriends();
 		}
