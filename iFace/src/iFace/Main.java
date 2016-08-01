@@ -35,9 +35,9 @@ public class Main {
 
 			// login
 			if (firstChoice == 1) {
+				// initializing 
 				secondChoice = 0;
 				thirdChoice = 0;
-				fourthChoice = 0;
 				String user;
 				String pass;
 
@@ -112,6 +112,7 @@ public class Main {
 					}
 					// show friends
 					else if (secondChoice == 3) {
+						fourthChoice = 0;
 						System.out.print("iFace: ");
 						System.out.println(" User Friends \n");
 						
@@ -129,12 +130,24 @@ public class Main {
 							
 							// shows users to add
 							if (fourthChoice == 1){
+								int friend = 0;
 								System.out.print("iFace: ");
-								System.out.println(" User Friends \n");
+								System.out.println(" Find Friends \n");
 								
 								//prints users
 								Management.getInstanceOf().printUsers();
-
+								
+								System.out.println("Write the id of your friend to add him/her: ");	
+								System.out.println("\nYOUR FRIEND'S ID:");
+								
+								input = new Scanner(System.in);
+								friend = input.nextInt();
+								input.nextLine();
+								
+								manager.getUserById(uId).addFriend(manager.getUserById(friend));
+								
+								System.out.println("Friend added successfully!");
+								System.out.println("-------------------------------------------------");
 							}
 						}
 						
