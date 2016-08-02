@@ -28,13 +28,45 @@ public class UserManager {
 		}
 	}
 
-	User getUserById(int id) {
+	public void updateInstance(User instance) {
 		Session session = sessionFactory.openSession();
-		
+
+		try {
+			session.beginTransaction();
+			session.update(instance);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} finally {
+			session.close();
+		}
+	}
+
+	void printUserProfile(int id) {
+		Session session = sessionFactory.openSession();
+
 		Query query = session.createQuery("from User where id = :id");
 		query.setParameter("id", id);
-		
+
 		User u = (User) query.uniqueResult();
+		System.out.println("NAME:");
+		System.out.println(u.getName());
+		System.out.println("USERNAME:");
+		System.out.println(u.getLogin());
+		System.out.println("EMAIL:");
+		System.out.println(u.getEmail());
+		
+	}
+
+	User getUserById(int id) {
+		Session session = sessionFactory.openSession();
+
+		Query query = session.createQuery("from User where id = :id");
+		query.setParameter("id", id);
+
+		User u = (User) query.uniqueResult();
+		System.out.println(u.getName());
 		return u;
 	}
 
@@ -45,12 +77,13 @@ public class UserManager {
 		query.setParameter("login", login);
 
 		User u = (User) query.uniqueResult();
-		
-		if (u == null) return -1;
+
+		if (u == null)
+			return -1;
 
 		if (u.getPassword().equals(senha))
 			return u.getId();
-		
+
 		return -1;
 	}
 

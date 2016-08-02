@@ -2,22 +2,31 @@ package iFace;
 
 import java.util.ArrayList;
 import java.util.Random;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
+@Entity
 public class Community {
+	@Id
+	@GeneratedValue
+	protected int id;
 	protected String name;
 	protected String info;
 	protected Integer owner;
-	protected int id;
+	
 	protected ArrayList<Integer> users = new ArrayList<Integer>();
+	
 	protected Management manager = new Management();
+	
+	public Community(){
+		
+	}
 
 	public Community(String name, String info, int owner) {
 		this.name = name;
 		this.info = info;
 		this.owner = owner;
-		Random generator = new Random();
-		this.id = generator.nextInt(8999999) + 101000000;
-		Management.getInstanceOf().addCommunity(this);
 	}
 
 	public Integer getId() {

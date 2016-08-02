@@ -11,7 +11,7 @@ public class Teste {
 		int firstChoice = 0;
 		int secondChoice = 0;
 		int thirdChoice = 0;
-		int fourthChoice = 0;
+		//int fourthChoice = 0;
 		int log = 0;
 		int uId = 0;
 
@@ -73,6 +73,8 @@ public class Teste {
 						while (thirdChoice != 2) {
 							System.out.print("iFace: ");
 							System.out.println(" User Profile \n");
+							
+							uManager.printUserProfile(uId);
 
 							// prints user
 							// Management.getInstanceOf().printUserById(uId);
@@ -88,17 +90,18 @@ public class Teste {
 							// edit profile
 							if (thirdChoice == 1) {
 
-								User userr = uManager.getUserById(uId);
+								User userprofile = uManager.getUserById(uId);
 
 								System.out.println("\nNAME:");
-								userr.setName(input.nextLine());
+								userprofile.setName(input.nextLine());
 
 								System.out.println("USERNAME:");
-								userr.setLogin(input.nextLine());
+								userprofile.setLogin(input.nextLine());
 
 								System.out.println("EMAIL:");
-								userr.setEmail(input.nextLine());
-
+								userprofile.setEmail(input.nextLine());
+								
+								uManager.updateInstance(userprofile);
 							}
 						}
 
@@ -109,7 +112,7 @@ public class Teste {
 					}
 					// show friends
 					else if (secondChoice == 3) {
-						fourthChoice = 0;
+						//fourthChoice = 0;
 						System.out.print("iFace: ");
 						System.out.println(" User Friends \n");
 						System.out.println("-------------------------------------------------");
@@ -176,23 +179,3 @@ public class Teste {
 		}
 	}
 }
-/*
- * User user = new User();
- * 
- * user.setName("Baldoino Neto"); user.setEmail("aaa"); user.setLogin("bad");
- * user.setPassword("maldade");
- * 
- * UserManager um = new UserManager();
- * 
- * um.addUser(user);
- * 
- * User usuarioConsultado = um.getUserById(1);
- * 
- * System.out.println(usuarioConsultado.getName());
- * 
- * if (um.loginCheck("bad", "maldade") == true){ System.out.println("foi\n"); }
- * 
- * }
- * 
- * }
- */
