@@ -1,26 +1,34 @@
 package iFace;
 
 import java.util.ArrayList;
-import java.util.Random;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class User {
+	@Id
+	@GeneratedValue
+	protected Integer id;
 	protected String name;
 	protected String login;
 	protected String email;
 	protected String password;
-	protected Integer id;
+	
 	protected ArrayList<String> messages = new ArrayList<String>();
 	protected ArrayList<Integer> communities = new ArrayList<Integer>();
 	protected ArrayList<User> friends = new ArrayList<User>();
+	
+	public User(){
+		
+	}
 
 	public User(String name, String login, String password, String email) {
 		this.name = name;
 		this.login = login;
 		this.password = password;
 		this.email = email;
-		Random generator = new Random();
-		this.id = generator.nextInt(8999999) + 201000000;
-		Management.getInstanceOf().addUser(this);
 	}
 
 	public String getName() {
