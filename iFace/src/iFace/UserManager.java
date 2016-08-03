@@ -1,5 +1,7 @@
 package iFace;
 
+import java.util.ArrayList;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -74,22 +76,22 @@ public class UserManager {
 
 	}
 
-	public void printUserFriends(User u) {
-
-		System.out.println(u.friends.size() > 0 ? "\nFRIENDS:\n" : "YOU HAVE NO FRIENDS");
-
-		for (int i = 0; i < u.friends.size(); i++) {
-			if (u.friends.get(i).isFriend == true) {
-				System.out.println("NAME:");
-				System.out.println(u.friends.get(i).user2.getName());
-				System.out.println("USERNAME:");
-				System.out.println(u.friends.get(i).user2.getLogin());
-				System.out.println("EMAIL:");
-				System.out.println(u.friends.get(i).user2.getEmail());
-			}
-		}
-
-	}
+//	public void printUserFriends(User u) {
+//	
+//	 System.out.println(u.friends.size() > 0 ? "\nFRIENDS:\n" : "YOU HAVE NO FRIENDS");
+//	
+//	 for (int i = 0; i < u.friends.size(); i++) {
+//	 if (u.friends.get(i).isFriend == 1) {
+//	 System.out.println("NAME:");
+//	 System.out.println(u.friends.get(i).user2.getName());
+//	 System.out.println("USERNAME:");
+//	 System.out.println(u.friends.get(i).user2.getLogin());
+//	 System.out.println("EMAIL:");
+//	 System.out.println(u.friends.get(i).user2.getEmail());
+//	 }
+//	 }
+//	
+//	 }
 
 	public int getFriendId(String login) {
 		Session session = sessionFactory.openSession();
@@ -113,7 +115,7 @@ public class UserManager {
 		query.setParameter("id", id);
 
 		User u = (User) query.uniqueResult();
-		System.out.println(u.getName());
+
 		return u;
 	}
 
@@ -125,15 +127,13 @@ public class UserManager {
 
 		User u = (User) query.uniqueResult();
 
-		if (u == null){
+		if (u == null) {
 			return -1;
 		}
-		if (u.getPassword().equals(senha)){
+		if (u.getPassword().equals(senha)) {
 			return u.getUserId();
 		}
 		return -1;
 	}
-	
-	
 
 }
