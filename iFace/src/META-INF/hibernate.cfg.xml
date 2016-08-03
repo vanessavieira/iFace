@@ -14,13 +14,6 @@
 
 		<mapping class="iFace.User" />
 
-
-		<!-- <mapping class="br.ufal.ic.extra.Person" /> -->
-		<!--<mapping class="br.ufal.ic.extra.CellPhone" /> -->
-
-
-
-
 	</session-factory>
 </hibernate-configuration>
 

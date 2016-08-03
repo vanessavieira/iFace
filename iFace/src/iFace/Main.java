@@ -11,7 +11,7 @@ public class Main {
 		int firstChoice = 0;
 		int secondChoice = 0;
 		int thirdChoice = 0;
-		//int fourthChoice = 0;
+		int fourthChoice = 0;
 		int log = 0;
 		int uId = 0;
 
@@ -73,11 +73,9 @@ public class Main {
 						while (thirdChoice != 2) {
 							System.out.print("iFace: ");
 							System.out.println(" User Profile \n");
-							
-							uManager.printUserProfile(uId);
 
 							// prints user
-							// Management.getInstanceOf().printUserById(uId);
+							uManager.printUserProfile(uId);
 
 							System.out.print("\nDo you want to edit your info?");
 							System.out.println(" 1. Yes | 2. No");
@@ -89,7 +87,6 @@ public class Main {
 
 							// edit profile
 							if (thirdChoice == 1) {
-
 								User userprofile = uManager.getUserById(uId);
 
 								System.out.println("\nNAME:");
@@ -100,7 +97,7 @@ public class Main {
 
 								System.out.println("EMAIL:");
 								userprofile.setEmail(input.nextLine());
-								
+
 								uManager.updateInstance(userprofile);
 							}
 						}
@@ -112,10 +109,106 @@ public class Main {
 					}
 					// show friends
 					else if (secondChoice == 3) {
-						//fourthChoice = 0;
+						User userFriends = uManager.getUserById(uId);
+						fourthChoice = 0;
+
 						System.out.print("iFace: ");
 						System.out.println(" User Friends \n");
-						System.out.println("-------------------------------------------------");
+
+						if (userFriends.friends.size() == 0) {
+							System.out.println("You have no friends. \n");
+
+							while (fourthChoice != 2) {
+								System.out.print("Do you want to add friends now?");
+								System.out.print(" 1. Yes | 2. No\n");
+								System.out.println("-------------------------------------------------");
+
+								input = new Scanner(System.in);
+								fourthChoice = input.nextInt();
+								input.nextLine();
+
+								if (fourthChoice == 1) {
+									int friend = 0;
+									String friendName;
+									User userFriend = new User();
+
+									System.out.print("iFace: ");
+									System.out.println(" Find Friends \n");
+									System.out.println("Write the username of your friend:\n");
+
+									friendName = input.nextLine();
+
+									if (uManager.getFriendId(friendName) != -1) {
+										uManager.printUserProfile(uManager.getFriendId(friendName));
+
+										System.out.println("\nWrite the id of your friend to add him/her: ");
+										System.out.println("\nYOUR FRIEND'S ID:");
+
+										input = new Scanner(System.in);
+										friend = input.nextInt();
+										input.nextLine();
+
+										// de fato adicionar o amigo no array
+										// dos coisa la
+
+										System.out.println("Friend added successfully!");
+										System.out.println("-------------------------------------------------");
+									} else {
+										System.out.println("This user was not found");
+										System.out.println("-------------------------------------------------");
+									}
+
+								}
+							}
+
+						} else {
+							uManager.printUserFriends(userFriends);
+							
+							while (fourthChoice != 2) {
+								System.out.print("Do you want to add friends now?");
+								System.out.print(" 1. Yes | 2. No\n");
+								System.out.println("-------------------------------------------------");
+
+								input = new Scanner(System.in);
+								fourthChoice = input.nextInt();
+								input.nextLine();
+
+								if (fourthChoice == 1) {
+									int friend = 0;
+									String friendName;
+									User userFriend = new User();
+
+									System.out.print("iFace: ");
+									System.out.println(" Find Friends \n");
+									System.out.println("Write the username of your friend:\n");
+
+									friendName = input.nextLine();
+
+									if (uManager.getFriendId(friendName) != -1) {
+										uManager.printUserProfile(uManager.getFriendId(friendName));
+
+										System.out.println("\nWrite the id of your friend to add him/her: ");
+										System.out.println("\nYOUR FRIEND'S ID:");
+
+										input = new Scanner(System.in);
+										friend = input.nextInt();
+										input.nextLine();
+										System.out.println("\nworking");
+
+										// de fato adicionar o amigo no array
+										// dos coisa la
+
+										System.out.println("Friend added successfully!");
+										System.out.println("-------------------------------------------------");
+									} else {
+										System.out.println("This user was not found");
+										System.out.println("-------------------------------------------------");
+									}
+
+								}
+							}
+							
+						}
 					}
 					// show messages
 					else if (secondChoice == 4) {
@@ -123,9 +216,12 @@ public class Main {
 					}
 					// remove account
 					else if (secondChoice == 5) {
-						// Management.getInstanceOf().removeUser(uId);
 						System.out.println("You have removed your account!");
 						System.out.println("-------------------------------------------------");
+
+						User userremove = uManager.getUserById(uId);
+						uManager.deleteUser(userremove);
+
 						break;
 					}
 					// log out
@@ -158,13 +254,9 @@ public class Main {
 
 				System.out.println("You are now registered!");
 				System.out.println("-------------------------------------------------");
-				
+
 				uManager.addUser(user);
-				uId = user.getId();
-
-				User usuarioConsultado = uManager.getUserById(uId);
-
-				System.out.println(usuarioConsultado.getName());
+				uId = user.getUserId();
 
 			}
 			// print everything that happened in the system
@@ -179,5 +271,3 @@ public class Main {
 		}
 	}
 }
-
-
