@@ -18,7 +18,7 @@ public class Main {
 		// creating the manager system of iFace
 		UserManager uManager = new UserManager();
 
-		while (firstChoice != 3) {		
+		while (firstChoice != 3) {
 			// first menu
 			System.out.print("Welcome to iFace!: ");
 			System.out.print("1. Login |");
@@ -110,56 +110,51 @@ public class Main {
 						User userFriends = uManager.getUserById(uId);
 						fourthChoice = 0;
 						int accept = 0;
-						
-//						User u = uManager.getUserById(1);
-//						for (User u2: u.getFriendRequest()){
-//							System.out.println(u2.getName());
-//						}
 
 						System.out.print("iFace: ");
 						System.out.println(" User Friends \n");
-						
-						if (userFriends.friendRequest.size() == 0){
+
+						if (userFriends.friendRequest.size() == 0) {
 							System.out.println("You have no friend requests.\n");
 						} else {
 							System.out.println("-------------------------------------------------");
 							System.out.print("iFace: ");
 							System.out.println(" User Friends \n");
 							System.out.println("Here is(are) your friend request(s):\n");
-							
-							for (User u2: userFriends.getFriendRequest()){
+
+							for (User u2 : userFriends.getFriendRequest()) {
 								System.out.print("NAME: ");
 								System.out.println(u2.getName());
 								System.out.print("USERNAME: ");
 								System.out.println(u2.getLogin());
 								System.out.print("ID: ");
 								System.out.println(u2.getUserId());
-								
+
 								System.out.println("\nDo you want to add this friend?  1. Yes | 2. No");
-								
+
 								input = new Scanner(System.in);
 								accept = input.nextInt();
 								input.nextLine();
-								
-								if (accept == 1){
-									
+
+								if (accept == 1) {
+
 									User user2 = uManager.getUserById(u2.getUserId());
-									
+
 									user2.addFriends(userFriends);
 									userFriends.addFriends(user2);
-									
+
 									uManager.addFriend(user2);
 									uManager.addFriend(userFriends);
-									
+
 									System.out.println("Friend added successfully!");
 									System.out.println("-------------------------------------------------");
-								}										
+								}
 							}
-							
-							//apagar a lista de request
+
+							// clear the friendRequest list
 							userFriends.friendRequest.clear();
 							uManager.updateInstance(userFriends);
-														
+
 						}
 
 						if (userFriends.friends.size() == 0) {
@@ -192,27 +187,28 @@ public class Main {
 										input = new Scanner(System.in);
 										friend = input.nextInt();
 										input.nextLine();
-										
+
 										User u = uManager.getUserById(friend);
-										
-										// adds to the friendRequest list of the person you want to add
+
+										// adds to the friendRequest list of the
+										// person you want to add
 										u.addFriendRequest(userFriends);
-										
-										for (User u2: u.getFriendRequest()){
+
+										for (User u2 : u.getFriendRequest()) {
 											System.out.println(u2.getName());
 										}
-										
+
 										// adds to the data base
 										uManager.addFriend(u);
-										
+
 										System.out.println("Friend request made successfully!");
 										System.out.println("-------------------------------------------------");
-										
+
 									} else {
-										
+
 										System.out.println("This user was not found");
 										System.out.println("-------------------------------------------------");
-										
+
 									}
 								}
 							}
@@ -242,21 +238,32 @@ public class Main {
 										uManager.printUserProfile(uManager.getFriendId(friendName));
 
 										System.out.println("\nWrite the id of your friend to add him/her: ");
-										System.out.println("\nYOUR FRIEND'S ID:");
 
 										input = new Scanner(System.in);
 										friend = input.nextInt();
 										input.nextLine();
-										System.out.println("\nworking");
 
-										// de fato adicionar o amigo no array
-										// dos coisa la
+										User u = uManager.getUserById(friend);
 
-										System.out.println("Friend added successfully!");
+										// adds to the friendRequest list of the
+										// person you want to add
+										u.addFriendRequest(userFriends);
+
+										for (User u2 : u.getFriendRequest()) {
+											System.out.println(u2.getName());
+										}
+
+										// adds to the data base
+										uManager.addFriend(u);
+
+										System.out.println("Friend request made successfully!");
 										System.out.println("-------------------------------------------------");
+
 									} else {
+
 										System.out.println("This user was not found");
 										System.out.println("-------------------------------------------------");
+
 									}
 								}
 							}
@@ -308,7 +315,7 @@ public class Main {
 				uManager.addUser(user);
 				uId = user.getUserId();
 			}
-			
+
 			// closing the system
 			else if (firstChoice == 3) {
 				System.err.println("Bye! See you soon!");
