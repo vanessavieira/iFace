@@ -10,11 +10,21 @@ import org.hibernate.cfg.Configuration;
 
 public class UserManager {
 
+	final ThreadLocal<Session> threadLocal = new ThreadLocal<Session>();
 	final SessionFactory sessionFactory = new Configuration().configure("./META-INF/hibernate.cfg.xml")
 			.buildSessionFactory();
+	Session session = threadLocal.get();
+
+	private static UserManager c_uManager;
+
+	public static UserManager getInstanceOf() {
+		if (c_uManager == null)
+			c_uManager = new UserManager();
+		return c_uManager;
+	}
 
 	public void addUser(User instance) {
-		Session session = sessionFactory.openSession();
+		session = sessionFactory.openSession();
 
 		try {
 			session.beginTransaction();
@@ -29,7 +39,7 @@ public class UserManager {
 	}
 
 	public void deleteUser(User instance) {
-		Session session = sessionFactory.openSession();
+		session = sessionFactory.openSession();
 
 		try {
 			session.beginTransaction();
@@ -44,7 +54,7 @@ public class UserManager {
 	}
 
 	public void updateInstance(User instance) {
-		Session session = sessionFactory.openSession();
+		session = sessionFactory.openSession();
 
 		try {
 			session.beginTransaction();
@@ -59,74 +69,79 @@ public class UserManager {
 	}
 
 	public void printUserProfile(int id) {
-		Session session = sessionFactory.openSession();
+		session = sessionFactory.openSession();
 
 		Query query = session.createQuery("from User where id = :id");
 		query.setParameter("id", id);
 
 		User u = (User) query.uniqueResult();
-		System.out.println("NAME:");
+		System.out.print("NAME: ");
 		System.out.println(u.getName());
-		System.out.println("USERNAME:");
+		System.out.print("USERNAME: ");
 		System.out.println(u.getLogin());
-		System.out.println("EMAIL:");
+		System.out.print("EMAIL: ");
 		System.out.println(u.getEmail());
-		System.out.println("ID:");
+		System.out.print("ID: ");
 		System.out.println(u.getUserId());
+
+		session.close();
 
 	}
 
-//	public void printUserFriends(User u) {
-//	
-//	 System.out.println(u.friends.size() > 0 ? "\nFRIENDS:\n" : "YOU HAVE NO FRIENDS");
-//	
-//	 for (int i = 0; i < u.friends.size(); i++) {
-//	 if (u.friends.get(i).isFriend == 1) {
-//	 System.out.println("NAME:");
-//	 System.out.println(u.friends.get(i).user2.getName());
-//	 System.out.println("USERNAME:");
-//	 System.out.println(u.friends.get(i).user2.getLogin());
-//	 System.out.println("EMAIL:");
-//	 System.out.println(u.friends.get(i).user2.getEmail());
-//	 }
-//	 }
-//	
-//	 }
+	public void printUserFriends(User u) {
+
+		System.out.println(u.friends.size() > 0 ? "\nFRIENDS:\n" : "YOU HAVE NO FRIENDS");
+
+		for (User u2 : u.getFriends()) {
+			System.out.print("NAME: ");
+			System.out.println(u2.getName());
+			System.out.print("USERNAME: ");
+			System.out.println(u2.getLogin());
+			System.out.print("EMAIL: ");
+			System.out.println(u2.getEmail());
+			System.out.println("\n");
+		}
+	}
 
 	public int getFriendId(String login) {
-		Session session = sessionFactory.openSession();
+		session = sessionFactory.openSession();
 
 		Query query = session.createQuery("from User where login = :login");
 		query.setParameter("login", login);
 
 		User u = (User) query.uniqueResult();
+
+		session.close();
 
 		if (u == null) {
 			return -1;
 		} else {
 			return u.getUserId();
 		}
+
 	}
 
 	public User getUserById(int id) {
-		Session session = sessionFactory.openSession();
+		session = sessionFactory.openSession();
 
 		Query query = session.createQuery("from User where id = :id");
 		query.setParameter("id", id);
 
 		User u = (User) query.uniqueResult();
 
+		session.close();
 		return u;
 	}
 
 	public int loginCheck(String login, String senha) {
-		Session session = sessionFactory.openSession();
+		session = sessionFactory.openSession();
 
 		Query query = session.createQuery("from User where login = :login");
 		query.setParameter("login", login);
 
 		User u = (User) query.uniqueResult();
 
+		session.close();
 		if (u == null) {
 			return -1;
 		}
@@ -134,6 +149,21 @@ public class UserManager {
 			return u.getUserId();
 		}
 		return -1;
+	}
+
+	public void addFriend(User instance) {
+		session = sessionFactory.openSession();
+
+		try {
+			session.beginTransaction();
+			session.update(instance);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} finally {
+			session.close();
+		}
 	}
 
 }

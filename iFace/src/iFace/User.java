@@ -3,13 +3,15 @@ package iFace;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class User {
@@ -21,15 +23,18 @@ public class User {
 	protected String login;
 	protected String email;
 	protected String password;
+	
+	
+	//UserManager uManager = new UserManager();
 
 	// protected ArrayList<String> messages = new ArrayList<String>();
 	// protected ArrayList<Integer> communities = new ArrayList<Integer>();
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Friendship", joinColumns = @JoinColumn(name = "User1"), inverseJoinColumns = @JoinColumn(name = "User2"))
 	protected List<User> friends = new ArrayList<User>();
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "FriendshipRequest", joinColumns = @JoinColumn(name = "User1"), inverseJoinColumns = @JoinColumn(name = "User2"))
 	protected List<User> friendRequest = new ArrayList<User>();
 
@@ -83,6 +88,14 @@ public class User {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
+	
+	public boolean addFriendRequest(User u) {
+		return this.friendRequest.add(u);
+	}
+	
+	public boolean addFriends(User u){
+		return this.friends.add(u);
+	}
 
 	// public User getFriendById(int fId) {
 	// User u = null;
@@ -102,19 +115,7 @@ public class User {
 	// }
 	// return c;
 	// }
-	//
-	// public boolean addFriend(User u) {
-	// if (u.equals(this)) {
-	// System.out.println("You need friends... ");
-	// return false;
-	// }
-	// if (getFriendById(u.getId()) != null) {
-	// System.out.println("Already have this friend...");
-	// return false;
-	// }
-	// u.someoneAddMe(this);
-	// return this.friends.add(u);
-	// }
+	//	
 	//
 	// public boolean removeFriend(User u) {
 	// return friends.remove(u);
@@ -124,9 +125,6 @@ public class User {
 	// return friends.remove(Management.getInstanceOf().getUserById(uId));
 	// }
 	//
-	// public boolean someoneAddMe(User u) {
-	// return this.friends.add(u);
-	// }
 	//
 	// public boolean kill() {
 	// for (int i = 0; i < communities.size(); i++) {
@@ -217,5 +215,25 @@ public class User {
 			System.out.println(friends.get(i).getName());
 		System.out.println("-------------------------------------------------");
 	}
+
+	public List<User> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
+	}
+
+	public List<User> getFriendRequest() {
+		return friendRequest;
+	}
+
+	public void setFriendRequest(List<User> friendRequest) {
+		this.friendRequest = friendRequest;
+	}
+	
+//	public boolean addFriend(User user2){
+//		return friendRequest.add(user2);
+//	}
 
 }
