@@ -35,7 +35,7 @@ public class User {
 	protected List<User> friends = new ArrayList<User>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "FriendshipRequest", joinColumns = @JoinColumn(name = "User1"), inverseJoinColumns = @JoinColumn(name = "User2"))
+	@JoinTable(name = "FriendshipRequest", joinColumns = @JoinColumn(name = "UserRequested"), inverseJoinColumns = @JoinColumn(name = "User2"))
 	protected List<User> friendRequest = new ArrayList<User>();
 
 	public User() {
