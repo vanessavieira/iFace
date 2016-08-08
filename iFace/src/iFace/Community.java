@@ -1,9 +1,15 @@
 package iFace;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Community {
@@ -12,15 +18,19 @@ public class Community {
 	protected int id;
 	protected String name;
 	protected String info;
-	protected Integer owner;
 
-	// protected ArrayList<Integer> users = new ArrayList<Integer>();
+	@ManyToMany
+	@JoinTable(name = "UserCommunity", joinColumns = @JoinColumn(name = "communityId"), inverseJoinColumns = @JoinColumn(name = "userId"))
+	private List<User> members;
+
+	@ManyToOne
+	private User owner;
 
 	public Community() {
 
 	}
 
-	public Community(String name, String info, int owner) {
+	public Community(String name, String info, User owner) {
 		this.name = name;
 		this.info = info;
 		this.owner = owner;
@@ -50,64 +60,38 @@ public class Community {
 		this.info = info;
 	}
 
-	public Integer getOwner() {
+	public User getOwner() {
 		return owner;
 	}
 
-	public void setOwner(Integer owner) {
+	public void setOwner(User owner) {
 		this.owner = owner;
 	}
 
-	// public boolean addUser(Integer newUser) {
-	// return users.add(newUser);
-	// }
-	//
-	// public boolean containsUser(int uId) {
-	// for (int i = 0; i < users.size(); i++)
-	// if (users.get(i) == uId)
-	// return true;
-	// return false;
-	// }
-	//
-	// public User getUserById(int uId) {
-	// User u = null;
-	// for (int i = 0; i < users.size(); i++)
-	// if (users.get(i) == uId)
-	// u = Management.getInstanceOf().getUserById(users.get(i));
-	// return u;
-	// }
-	//
-	// public void print() {
-	// System.out.println("NAME:" + this.name);
-	// System.out.println("INFO:" + this.info);
-	// System.out.println("OWNER:" + this.owner);
-	// System.out.println("ID:" + this.id);
-	// System.out.println(users.size() > 0 ? "USERS:" : "NO USERS");
-	// for (int i = 0; i < users.size(); i++)
-	// System.out.println(Management.getInstanceOf()
-	// .getUserById(users.get(i)).getName());
-	// }
-	//
-	// public boolean removeUser(int uId) {
-	// if (uId == owner)
-	// return Management.getInstanceOf().removeCommunity(this.id);
-	// User u = getUserById(uId);
-	// if (u == null) {
-	// System.out.println("User Not Found " + this.name);
-	// return false;
-	// }
-	// return users.remove(u.getId());
-	// }
-	//
-	// public boolean kill() {
-	// for (int i = 0; i < users.size(); i++) {
-	// User u = Management.getInstanceOf().getUserById(users.get(i));
-	// if (!u.removeCommunity(this.id))
-	// return false;
-	// }
-	// User u = Management.getInstanceOf().getUserById(owner);
-	// if (!u.removeCommunity(this.id))
-	// return false;
-	// return true;
-	// }
+	public List<User> getMembers() {
+		return members;
+	}
+
+	public void setMembers(List<User> members) {
+		this.members = members;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void addMember(User user) {
+		this.members.add(user);
+	}
+
+	public void print() {
+		System.out.println("NAME:" + this.name);
+		System.out.println("INFO:" + this.info);
+		System.out.println("OWNER:" + this.owner);
+		System.out.println("ID:" + this.id);
+		System.out.println(members.size() > 0 ? "USERS:" : "NO USERS");
+		for (int i = 0; i < members.size(); i++)
+			System.out.println(Management.getInstanceOf().getUserById(members.get(i).getUserId()).getName());
+	}
+
 }

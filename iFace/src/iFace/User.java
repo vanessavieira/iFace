@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -24,11 +25,15 @@ public class User {
 	protected String email;
 	protected String password;
 	
-	
-	//UserManager uManager = new UserManager();
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userReciever")
+	private List<Message> receivedMessages;
 
-	// protected ArrayList<String> messages = new ArrayList<String>();
-	// protected ArrayList<Integer> communities = new ArrayList<Integer>();
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "members")
+	private List<Community> communities;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+	private List<Community> managedCommunities;
+
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Friendship", joinColumns = @JoinColumn(name = "User1"), inverseJoinColumns = @JoinColumn(name = "User2"))
@@ -42,11 +47,19 @@ public class User {
 
 	}
 
-	public User(String name, String login, String password, String email) {
-		this.name = name;
+	public User(int userId, String login, String password,
+			List<Message> receivedMessages, List<Community> communities,
+			List<Community> managedCommunities, List<User> friends,
+			List<User> friendRequest) {
+		super();
+		this.userId = userId;
 		this.login = login;
 		this.password = password;
-		this.email = email;
+		this.receivedMessages = receivedMessages;
+		this.communities = communities;
+		this.managedCommunities = managedCommunities;
+		this.friends = friends;
+		this.friendRequest = friendRequest;
 	}
 
 	public String getName() {
@@ -96,96 +109,14 @@ public class User {
 	public boolean addFriends(User u){
 		return this.friends.add(u);
 	}
-
-	// public User getFriendById(int fId) {
-	// User u = null;
-	// for (int i = 0; i < friends.size(); i++) {
-	// if (friends.get(i).getId() == fId)
-	// u = friends.get(i);
-	// }
-	// return u;
-	// }
-	//
-	// public Community getCommunityById(int cId) {
-	// Community c = null;
-	// for (int i = 0; i < communities.size(); i++) {
-	// if (communities.get(i) == cId)
-	// c = Management.getInstanceOf().getCommunityById(
-	// communities.get(i));
-	// }
-	// return c;
-	// }
-	//	
-	//
-	// public boolean removeFriend(User u) {
-	// return friends.remove(u);
-	// }
-	//
-	// public boolean removeFriend(int uId) {
-	// return friends.remove(Management.getInstanceOf().getUserById(uId));
-	// }
-	//
-	//
-	// public boolean kill() {
-	// for (int i = 0; i < communities.size(); i++) {
-	// Community c = Management.getInstanceOf().getCommunityById(
-	// communities.get(i));
-	// if (!c.removeUser(this.getId()))
-	// return false;
-	// }
-	// for (int i = 0; i < friends.size(); i++) {
-	// User u = friends.get(i);
-	// if (!u.removeFriend(this))
-	// return false;
-	// }
-	// return true;
-	// }
-	//
-	// public boolean addCommunity(int cId) {
-	// return communities.add(cId);
-	// }
-	//
-	// public boolean removeCommunity(int cId) {
-	// Community c = getCommunityById(cId);
-	// if (c == null) {
-	// System.out.println("Community not found!");
-	// return false;
-	// }
-	// return communities.remove(c.getId());
-	// }
-	//
-	// public boolean sendMessage(String message, int userID) {
-	// return Management.getInstanceOf().sendMessage(message, userID);
-	// }
-	//
-	// public Community createCommunity(String name, String info) {
-	// Community c = new Community(name, info, this.id);
-	// communities.add(c.getId());
-	// return c;
-	// }
-	//
-	// public boolean addUserCommunity(int cId, int uId) {
-	// boolean checkCommunity = false;
-	// for (int i = 0; i < this.communities.size(); i++) {
-	// if (cId == this.communities.get(i)) {
-	// checkCommunity = true;
-	// break;
-	// }
-	// }
-	// if (!checkCommunity)
-	// return false;
-	// Community c = Management.getInstanceOf().getCommunityById(cId);
-	// if (!c.getOwner().equals(this.getId()))
-	// return false;
-	// if (c.containsUser(uId))
-	// return false;
-	// Management.getInstanceOf().getUserById(uId).addCommunity(cId);
-	// return c.addUser(uId);
-	// }
-	//
-	// public boolean addMessage(String message) {
-	// return messages.add(message);
-	// }
+	
+	public boolean removeFriendRequest(User u){
+		return this.friendRequest.remove(u);
+	}
+	
+	public boolean removeFriends (User u){
+		return this.friends.remove(u);
+	}
 
 	public void printProfile() {
 		System.out.println("NAME:" + this.name);
@@ -194,21 +125,7 @@ public class User {
 		System.out.println("ID:" + this.userId);
 		System.out.println("\n");
 	}
-
-	// public void printMessages() {
-	// System.out.println(messages.size() > 0 ? "MESSAGES:" : "NO MESSAGES");
-	// for (int i = 0; i < messages.size(); i++)
-	// System.out.println(messages.get(i));
-	// }
-	//
-	// public void printCommunities() {
-	// System.out.println(communities.size() > 0 ? "COMMUNITIES:"
-	// : "NO COMMUNITIES");
-	// for (int i = 0; i < communities.size(); i++)
-	// System.out.println(Management.getInstanceOf()
-	// .getCommunityById(communities.get(i)).getName());
-	// }
-	//
+	
 	public void printFriends() {
 		System.out.println(friends.size() > 0 ? "FRIENDS:" : "NO FRIENDS");
 		for (int i = 0; i < friends.size(); i++)
@@ -232,8 +149,51 @@ public class User {
 		this.friendRequest = friendRequest;
 	}
 	
-//	public boolean addFriend(User user2){
-//		return friendRequest.add(user2);
-//	}
+	public List<Message> getReceivedMessages() {
+		return receivedMessages;
+	}
 
+	public void setReceivedMessages(List<Message> receivedMessages) {
+		this.receivedMessages = receivedMessages;
+	}
+
+	public List<Community> getCommunities() {
+		return communities;
+	}
+
+	public void setCommunities(List<Community> communities) {
+		this.communities = communities;
+	}
+
+	public List<Community> getManagedCommunities() {
+		return managedCommunities;
+	}
+
+	public void setManagedCommunities(List<Community> managedCommunities) {
+		this.managedCommunities = managedCommunities;
+	}
+
+	public void addReceivedMessage(Message message) {
+		this.receivedMessages.add(message);
+	}
+
+	public void addManagedCommunities(Community community) {
+		this.managedCommunities.add(community);
+	}
+
+	public void addCommunities(Community community) {
+		this.communities.add(community);
+	}
+	
+	public void removeCommunities(Community community){
+		this.communities.remove(community);
+	}
+	
+	public void removeManagedCommunities(Community community){
+		this.managedCommunities.remove(community);
+	}
+	
+	public void removeReceivedMessages(Message message) {
+		this.receivedMessages.remove(message);
+	}
 }

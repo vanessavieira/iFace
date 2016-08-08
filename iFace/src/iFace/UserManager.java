@@ -15,13 +15,13 @@ public class UserManager {
 			.buildSessionFactory();
 	Session session = threadLocal.get();
 
-	private static UserManager c_uManager;
-
-	public static UserManager getInstanceOf() {
-		if (c_uManager == null)
-			c_uManager = new UserManager();
-		return c_uManager;
-	}
+//	private static UserManager c_uManager;
+//
+//	public static UserManager getInstanceOf() {
+//		if (c_uManager == null)
+//			c_uManager = new UserManager();
+//		return c_uManager;
+//	}
 
 	public void addUser(User instance) {
 		session = sessionFactory.openSession();
@@ -38,9 +38,9 @@ public class UserManager {
 		}
 	}
 
-	public void deleteUser(User instance) {	
+	public void deleteUser(User instance) {
 		session = sessionFactory.openSession();
-	
+
 		try {
 			session.beginTransaction();
 			session.delete(instance);
@@ -164,8 +164,8 @@ public class UserManager {
 			session.close();
 		}
 	}
-	
-	public int verifyUserName(String login){
+
+	public int verifyUserName(String login) {
 		session = sessionFactory.openSession();
 
 		Query query = session.createQuery("from User where login = :login");
@@ -174,41 +174,44 @@ public class UserManager {
 		User u = (User) query.uniqueResult();
 
 		session.close();
-		
-		if (u != null){
+
+		if (u != null) {
 			System.err.println("This username already exists!");
 			return -1;
 		}
 		return 0;
 	}
-	
-	public int verifyFriendshipRequest(User user, int uId){
-		for (int i = 0; i < user.friendRequest.size(); i++){
-			if (uId == user.friendRequest.get(i).getUserId()){
+
+	public int verifyFriendshipRequest(User user, int uId) {
+		for (int i = 0; i < user.friendRequest.size(); i++) {
+			if (uId == user.friendRequest.get(i).getUserId()) {
 				System.err.println("You already have requested this friend!\n");
 				return -1;
 			}
 		}
 		return 0;
 	}
-	
-	public int verifyFriendship(User user, int uId){
-		for (int i = 0; i < user.friends.size(); i++){
-			if (uId == user.friends.get(i).getUserId()){
+
+	public int verifyFriendship(User user, int uId) {
+		for (int i = 0; i < user.friends.size(); i++) {
+			if (uId == user.friends.get(i).getUserId()) {
 				System.err.println("You are already friends!\n");
 				return -1;
 			}
 		}
 		return 0;
 	}
-	
-	public void deleteUserRelations(User user){
+
+	public void deleteUserRelations(User user) {
 		int uId = user.getUserId();
+
+		for (User u : user.getFriendRequest()) {
+				user.removeFriendRequest(u);
+				u.removeFriendRequest(user);	
+		}
 		
-		for (int j = 0; j < user.friends.size(); j++){
-			User ufriend = getUserById(user.friends.get(j).getUserId());
-			ufriend.getFriends().remove(user);
-			user.getFriends().remove(ufriend);
+		for (User u : user.getFriends()) {
+				u.removeFriends(user);		
 		}
 		user.friends.clear();
 		user.friendRequest.clear();

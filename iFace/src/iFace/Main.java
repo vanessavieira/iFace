@@ -293,7 +293,7 @@ public class Main {
 			else if (firstChoice == 2) {
 				scan = new Scanner(System.in);
 
-				User user = new User(null, null, null, null);
+				User user = new User();
 
 				System.out.print("\nNAME: ");
 				user.setName(input.nextLine());
