@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class User {
@@ -24,22 +23,21 @@ public class User {
 	protected String login;
 	protected String email;
 	protected String password;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userReciever")
-	private List<Message> receivedMessages;
 
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "members")
-	private List<Community> communities;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userReciever", cascade = CascadeType.ALL)
+	protected List<Message> receivedMessages;
+
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "members")
+	protected List<Community> communities;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-	private List<Community> managedCommunities;
+	protected List<Community> managedCommunities;
 
-
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JoinTable(name = "Friendship", joinColumns = @JoinColumn(name = "User1"), inverseJoinColumns = @JoinColumn(name = "User2"))
 	protected List<User> friends = new ArrayList<User>();
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JoinTable(name = "FriendshipRequest", joinColumns = @JoinColumn(name = "UserRequested"), inverseJoinColumns = @JoinColumn(name = "User2"))
 	protected List<User> friendRequest = new ArrayList<User>();
 
@@ -47,10 +45,8 @@ public class User {
 
 	}
 
-	public User(int userId, String login, String password,
-			List<Message> receivedMessages, List<Community> communities,
-			List<Community> managedCommunities, List<User> friends,
-			List<User> friendRequest) {
+	public User(int userId, String login, String password, List<Message> receivedMessages, List<Community> communities,
+			List<Community> managedCommunities, List<User> friends, List<User> friendRequest) {
 		super();
 		this.userId = userId;
 		this.login = login;
@@ -101,20 +97,20 @@ public class User {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-	
+
 	public boolean addFriendRequest(User u) {
 		return this.friendRequest.add(u);
 	}
-	
-	public boolean addFriends(User u){
+
+	public boolean addFriends(User u) {
 		return this.friends.add(u);
 	}
-	
-	public boolean removeFriendRequest(User u){
+
+	public boolean removeFriendRequest(User u) {
 		return this.friendRequest.remove(u);
 	}
-	
-	public boolean removeFriends (User u){
+
+	public boolean removeFriends(User u) {
 		return this.friends.remove(u);
 	}
 
@@ -125,7 +121,7 @@ public class User {
 		System.out.println("ID:" + this.userId);
 		System.out.println("\n");
 	}
-	
+
 	public void printFriends() {
 		System.out.println(friends.size() > 0 ? "FRIENDS:" : "NO FRIENDS");
 		for (int i = 0; i < friends.size(); i++)
@@ -148,7 +144,7 @@ public class User {
 	public void setFriendRequest(List<User> friendRequest) {
 		this.friendRequest = friendRequest;
 	}
-	
+
 	public List<Message> getReceivedMessages() {
 		return receivedMessages;
 	}
@@ -184,15 +180,15 @@ public class User {
 	public void addCommunities(Community community) {
 		this.communities.add(community);
 	}
-	
-	public void removeCommunities(Community community){
+
+	public void removeCommunities(Community community) {
 		this.communities.remove(community);
 	}
-	
-	public void removeManagedCommunities(Community community){
+
+	public void removeManagedCommunities(Community community) {
 		this.managedCommunities.remove(community);
 	}
-	
+
 	public void removeReceivedMessages(Message message) {
 		this.receivedMessages.remove(message);
 	}

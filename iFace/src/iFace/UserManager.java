@@ -1,7 +1,5 @@
 package iFace;
 
-import java.util.ArrayList;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -202,19 +200,25 @@ public class UserManager {
 		return 0;
 	}
 
-	public void deleteUserRelations(User user) {
+	public User deleteUserRelations(User user) {
 		int uId = user.getUserId();
-
-		for (User u : user.getFriendRequest()) {
-				user.removeFriendRequest(u);
-				u.removeFriendRequest(user);	
-		}
 		
-		for (User u : user.getFriends()) {
-				u.removeFriends(user);		
-		}
-		user.friends.clear();
-		user.friendRequest.clear();
+		user = getUserById(uId);
+		
+		for (User u : user.getFriends())
+			u.getFriends().remove(user);
+		
+		for (User u : user.getFriendRequest())
+			u.getFriendRequest().remove(user);
+		
+		for (Community c : user.getCommunities())
+			c.getMembers().remove(user);
+		
+		user.setFriends(null);
+		user.setFriendRequest(null);
+		user.setCommunities(null);
+		
+		return user;
 	}
 
 }

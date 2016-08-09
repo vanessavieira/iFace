@@ -1,28 +1,22 @@
 package iFace;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Message {
 	@Id
 	@GeneratedValue
-	private int id;
-	private String content;
+	protected int id;
+	protected String content;
 
 	@ManyToOne
-	private User userSender;
+	protected User userSender;
 
 	@ManyToOne
-	private User userReciever;
+	protected User userReciever;
 
 	public Message() {
 

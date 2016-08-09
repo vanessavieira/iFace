@@ -266,7 +266,7 @@ public class Main {
 					}
 					// show messages
 					else if (secondChoice == 4) {
-
+						
 					}
 					// remove account
 					else if (secondChoice == 5) {
@@ -275,9 +275,9 @@ public class Main {
 
 						User userremove = uManager.getUserById(uId);
 						
-						uManager.deleteUserRelations(userremove);
-						uManager.updateInstance(userremove);
-						//uManager.deleteUser(userremove);
+						//userremove = uManager.deleteUserRelations(userremove);
+						//uManager.updateInstance(userremove);
+						uManager.deleteUser(userremove);
 
 						break;
 					}

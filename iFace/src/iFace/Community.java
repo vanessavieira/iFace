@@ -1,6 +1,5 @@
 package iFace;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -21,10 +20,10 @@ public class Community {
 
 	@ManyToMany
 	@JoinTable(name = "UserCommunity", joinColumns = @JoinColumn(name = "communityId"), inverseJoinColumns = @JoinColumn(name = "userId"))
-	private List<User> members;
+	protected List<User> members;
 
 	@ManyToOne
-	private User owner;
+	protected User owner;
 
 	public Community() {
 
@@ -83,15 +82,4 @@ public class Community {
 	public void addMember(User user) {
 		this.members.add(user);
 	}
-
-	public void print() {
-		System.out.println("NAME:" + this.name);
-		System.out.println("INFO:" + this.info);
-		System.out.println("OWNER:" + this.owner);
-		System.out.println("ID:" + this.id);
-		System.out.println(members.size() > 0 ? "USERS:" : "NO USERS");
-		for (int i = 0; i < members.size(); i++)
-			System.out.println(Management.getInstanceOf().getUserById(members.get(i).getUserId()).getName());
-	}
-
 }
