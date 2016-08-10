@@ -1,5 +1,8 @@
 package iFace;
 
+import java.util.List;
+
+import javax.persistence.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -257,6 +260,52 @@ public class UserManager {
 		} finally {
 			session.close();
 		}
+	}
+	
+	public void sendMessageToCommunity(User user){
+		
+	}
+	
+	public void printCommunityByUser(User u){
+		for (Community c : u.getCommunities()) {
+			System.out.print("Name: ");
+			System.out.println(c.getName());
+			System.out.print("Description: ");
+			System.out.println(c.getInfo());
+			System.out.print("Owner: ");
+			System.out.println(c.getOwner().getLogin());
+			System.out.print("ID: ");
+			System.out.println(c.getId());
+			System.out.println("\n");
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void printAllCommunities() {
+		session = sessionFactory.openSession();
+		List<Community> list = null;
+
+		try {
+			session.beginTransaction();
+			list = session.createCriteria(Community.class).list();
+			session.close();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} finally {
+			for (Community c : list){
+				System.out.print("Name: ");
+				System.out.println(c.getName());
+				System.out.print("Description: ");
+				System.out.println(c.getInfo());
+				System.out.print("Owner: ");
+				System.out.println(c.getOwner().getLogin());
+				System.out.print("ID: ");
+				System.out.println(c.getId());
+				System.out.println("\n");
+			}
+		}
+		
 	}
 	
 	// Messages

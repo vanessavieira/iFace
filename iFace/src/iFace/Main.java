@@ -104,7 +104,81 @@ public class Main {
 					}
 					// show communities
 					else if (secondChoice == 2) {
+						int accept = 0;
+						fifthChoice = 0;
+						String content;
+						User userCommunities = uManager.getUserById(uId);
+			
+						while (fifthChoice != 4){
+							System.out.print("iFace: ");
+							System.out.println(" User Communities ");
+							
+							if (userCommunities.getCommunities().size() == 0) {
+								System.out.println("You have no communities.");
+							} else {
+								System.out.println("Here is/are your communities:\n");
 
+								uManager.printCommunityByUser(userCommunities);
+							}
+							
+							System.out.print("1. Create a Community |");
+							System.out.print(" 2. Send a Message to a Community |");
+							System.out.print(" 3. Join a Community |");
+							System.out.print(" 4. Return\n");
+							System.out.print("-------------------------------------------------");
+							
+							input = new Scanner(System.in);
+							fifthChoice = input.nextInt();
+							input.nextLine();
+							
+							if (fifthChoice == 1){
+								System.out.print("iFace: ");
+								System.out.println(" Creating a Community");
+								
+								Community community = new Community();
+
+								System.out.print("NAME: ");
+								community.setName(input.nextLine());
+
+								System.out.print("DESCRIPTION: ");
+								community.setInfo(input.nextLine());
+								
+								community.setOwner(uManager.getUserById(uId));
+								
+								// associates the community with the user
+								userCommunities.addCommunities(community);		
+								userCommunities.addManagedCommunities(community);
+								
+								uManager.createCommunity(community);
+								
+								System.out.println("Community created successfully!\n");
+							}
+							else if (fifthChoice == 2){
+								uManager.printCommunityByUser(userCommunities);
+								System.out.print("Id of the Community you want to send a message: ");
+
+								input = new Scanner(System.in);
+								int communityId = input.nextInt();
+								input.nextLine();
+
+								System.out.print("Content of the message: ");
+								content = input.nextLine();
+
+								Message msg = new Message();
+								msg.setContent(content);
+								msg.setUserReciever(userCommunities);
+								msg.setUserSender(userCommunities);
+
+								uManager.createMessage(msg);
+								System.out.println("Message sent successfully!\n");
+							}
+							else if (fifthChoice == 3){
+								// it should print all communities and the user should choose one to be in
+							}
+							else if (fifthChoice == 4){
+								break;
+							}
+						}
 					}
 					// show friends
 					else if (secondChoice == 3) {
@@ -260,10 +334,8 @@ public class Main {
 											System.out.println("-------------------------------------------------");
 										}
 									} else {
-
 										System.out.println("This user was not found");
 										System.out.println("-------------------------------------------------");
-
 									}
 								}
 							}
@@ -287,35 +359,34 @@ public class Main {
 							uManager.printMessagesByUser(userMessages);
 						}
 
-						while (accept != 2) {	
+						while (accept != 2) {
 							System.out.println("Do you want to send a new message? 1. Yes | 2. No");
 
 							input = new Scanner(System.in);
 							accept = input.nextInt();
 							input.nextLine();
-							
+
 							if (accept == 1) {
 								uManager.printUserFriends(userMessages);
 								System.out.print("Id of the friend you want to send a message: ");
-								
+
 								input = new Scanner(System.in);
 								friend = input.nextInt();
 								input.nextLine();
-								
+
 								System.out.print("Content of the message: ");
 								content = input.nextLine();
-								
+
 								Message msg = new Message();
 								msg.setContent(content);
 								msg.setUserReciever(uManager.getUserById(friend));
 								msg.setUserSender(userMessages);
-								
+
 								uManager.createMessage(msg);
-								
+
 								System.out.println("Message sent successfully!\n");
 							}
 						}
-
 					}
 					// remove account
 					else if (secondChoice == 5) {
