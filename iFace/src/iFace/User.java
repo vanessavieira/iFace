@@ -24,20 +24,22 @@ public class User {
 	protected String email;
 	protected String password;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userReciever", cascade = CascadeType.ALL)
-	protected List<Message> receivedMessages;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "userReciever")
+	protected List<Message> receivedMessages = new ArrayList<Message>();
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "members")
-	protected List<Community> communities;
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "members")
+	protected List<Community> communities = new ArrayList<Community>();
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-	protected List<Community> managedCommunities;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+	protected List<Community> managedCommunities = new ArrayList<Community>();
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.DELETE})
 	@JoinTable(name = "Friendship", joinColumns = @JoinColumn(name = "User1"), inverseJoinColumns = @JoinColumn(name = "User2"))
 	protected List<User> friends = new ArrayList<User>();
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.DELETE})
 	@JoinTable(name = "FriendshipRequest", joinColumns = @JoinColumn(name = "UserRequested"), inverseJoinColumns = @JoinColumn(name = "User2"))
 	protected List<User> friendRequest = new ArrayList<User>();
 

@@ -12,6 +12,7 @@ public class Main {
 		int secondChoice = 0;
 		int thirdChoice = 0;
 		int fourthChoice = 0;
+		int fifthChoice = 0;
 		int log = 0;
 		int uId = 0;
 
@@ -137,8 +138,8 @@ public class Main {
 								input.nextLine();
 
 								if (accept == 1) {
-									
-									if (uManager.verifyFriendship(u2, uId) == 0){
+
+									if (uManager.verifyFriendship(u2, uId) == 0) {
 										u2.addFriends(userFriends);
 										userFriends.addFriends(u2);
 
@@ -189,9 +190,11 @@ public class Main {
 										input.nextLine();
 
 										User u = uManager.getUserById(friend);
-										
-										if (uManager.verifyFriendshipRequest(u, uId) == 0 && uManager.verifyFriendship(u, uId) == 0){
-											// adds to the friendRequest list of the
+
+										if (uManager.verifyFriendshipRequest(u, uId) == 0
+												&& uManager.verifyFriendship(u, uId) == 0) {
+											// adds to the friendRequest list of
+											// the
 											// person you want to add
 											u.addFriendRequest(userFriends);
 
@@ -200,7 +203,7 @@ public class Main {
 
 											System.out.println("Friend request made successfully!");
 											System.out.println("-------------------------------------------------");
-										}			
+										}
 
 									} else {
 
@@ -242,9 +245,11 @@ public class Main {
 										input.nextLine();
 
 										User u = uManager.getUserById(friend);
-										
-										if (uManager.verifyFriendshipRequest(u, uId) == 0 && uManager.verifyFriendship(u, uId) == 0){
-											// adds to the friendRequest list of the
+
+										if (uManager.verifyFriendshipRequest(u, uId) == 0
+												&& uManager.verifyFriendship(u, uId) == 0) {
+											// adds to the friendRequest list of
+											// the
 											// person you want to add
 											u.addFriendRequest(userFriends);
 
@@ -266,7 +271,51 @@ public class Main {
 					}
 					// show messages
 					else if (secondChoice == 4) {
-						
+						int accept = 0;
+						int friend = 0;
+						String content;
+						User userMessages = uManager.getUserById(uId);
+
+						System.out.print("iFace: ");
+						System.out.println(" User Messages \n");
+
+						if (userMessages.receivedMessages.size() == 0) {
+							System.out.println("You have no new messages.");
+						} else {
+							System.out.println("Here is/are your messages:\n");
+
+							uManager.printMessagesByUser(userMessages);
+						}
+
+						while (accept != 2) {	
+							System.out.println("Do you want to send a new message? 1. Yes | 2. No");
+
+							input = new Scanner(System.in);
+							accept = input.nextInt();
+							input.nextLine();
+							
+							if (accept == 1) {
+								uManager.printUserFriends(userMessages);
+								System.out.print("Id of the friend you want to send a message: ");
+								
+								input = new Scanner(System.in);
+								friend = input.nextInt();
+								input.nextLine();
+								
+								System.out.print("Content of the message: ");
+								content = input.nextLine();
+								
+								Message msg = new Message();
+								msg.setContent(content);
+								msg.setUserReciever(uManager.getUserById(friend));
+								msg.setUserSender(userMessages);
+								
+								uManager.createMessage(msg);
+								
+								System.out.println("Message sent successfully!\n");
+							}
+						}
+
 					}
 					// remove account
 					else if (secondChoice == 5) {
@@ -274,9 +323,10 @@ public class Main {
 						System.out.println("-------------------------------------------------");
 
 						User userremove = uManager.getUserById(uId);
-						
-						//userremove = uManager.deleteUserRelations(userremove);
-						//uManager.updateInstance(userremove);
+
+						// userremove =
+						// uManager.deleteUserRelations(userremove);
+						// uManager.updateInstance(userremove);
 						uManager.deleteUser(userremove);
 
 						break;
@@ -306,16 +356,16 @@ public class Main {
 
 				System.out.print("PASSWORD: ");
 				user.setPassword(input.nextLine());
-	
-				if (uManager.verifyUserName(user.getLogin()) == 0){
+
+				if (uManager.verifyUserName(user.getLogin()) == 0) {
 
 					System.out.println("You are now registered!");
 					System.out.println("-------------------------------------------------");
-					
+
 					uManager.addUser(user);
 					uId = user.getUserId();
 				}
-				
+
 			}
 
 			// closing the system

@@ -13,14 +13,7 @@ public class UserManager {
 			.buildSessionFactory();
 	Session session = threadLocal.get();
 
-//	private static UserManager c_uManager;
-//
-//	public static UserManager getInstanceOf() {
-//		if (c_uManager == null)
-//			c_uManager = new UserManager();
-//		return c_uManager;
-//	}
-
+	// Users and Friends
 	public void addUser(User instance) {
 		session = sessionFactory.openSession();
 
@@ -66,38 +59,17 @@ public class UserManager {
 		}
 	}
 
-	public void printUserProfile(int id) {
+	public void addFriend(User instance) {
 		session = sessionFactory.openSession();
-
-		Query query = session.createQuery("from User where id = :id");
-		query.setParameter("id", id);
-
-		User u = (User) query.uniqueResult();
-		System.out.print("NAME: ");
-		System.out.println(u.getName());
-		System.out.print("USERNAME: ");
-		System.out.println(u.getLogin());
-		System.out.print("EMAIL: ");
-		System.out.println(u.getEmail());
-		System.out.print("ID: ");
-		System.out.println(u.getUserId());
-
-		session.close();
-
-	}
-
-	public void printUserFriends(User u) {
-
-		System.out.println(u.friends.size() > 0 ? "\nFRIENDS:\n" : "YOU HAVE NO FRIENDS");
-
-		for (User u2 : u.getFriends()) {
-			System.out.print("NAME: ");
-			System.out.println(u2.getName());
-			System.out.print("USERNAME: ");
-			System.out.println(u2.getLogin());
-			System.out.print("EMAIL: ");
-			System.out.println(u2.getEmail());
-			System.out.println("\n");
+		try {
+			session.beginTransaction();
+			session.update(instance);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} finally {
+			session.close();
 		}
 	}
 
@@ -149,20 +121,6 @@ public class UserManager {
 		return -1;
 	}
 
-	public void addFriend(User instance) {
-		session = sessionFactory.openSession();
-		try {
-			session.beginTransaction();
-			session.update(instance);
-			session.getTransaction().commit();
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
-		} finally {
-			session.close();
-		}
-	}
-
 	public int verifyUserName(String login) {
 		session = sessionFactory.openSession();
 
@@ -200,25 +158,158 @@ public class UserManager {
 		return 0;
 	}
 
-	public User deleteUserRelations(User user) {
-		int uId = user.getUserId();
-		
-		user = getUserById(uId);
-		
-		for (User u : user.getFriends())
-			u.getFriends().remove(user);
-		
-		for (User u : user.getFriendRequest())
-			u.getFriendRequest().remove(user);
-		
-		for (Community c : user.getCommunities())
-			c.getMembers().remove(user);
-		
-		user.setFriends(null);
-		user.setFriendRequest(null);
-		user.setCommunities(null);
-		
-		return user;
+	// public User deleteUserRelations(User user) {
+	// int uId = user.getUserId();
+	//
+	// user = getUserById(uId);
+	//
+	// for (User u : user.getFriends())
+	// u.getFriends().remove(user);
+	//
+	// for (User u : user.getFriendRequest())
+	// u.getFriendRequest().remove(user);
+	//
+	// for (Community c : user.getCommunities())
+	// c.getMembers().remove(user);
+	//
+	// user.setFriends(null);
+	// user.setFriendRequest(null);
+	// user.setCommunities(null);
+	//
+	// return user;
+	// }
+
+	public void printUserProfile(int id) {
+		session = sessionFactory.openSession();
+
+		Query query = session.createQuery("from User where id = :id");
+		query.setParameter("id", id);
+
+		User u = (User) query.uniqueResult();
+		System.out.print("NAME: ");
+		System.out.println(u.getName());
+		System.out.print("USERNAME: ");
+		System.out.println(u.getLogin());
+		System.out.print("EMAIL: ");
+		System.out.println(u.getEmail());
+		System.out.print("ID: ");
+		System.out.println(u.getUserId());
+
+		session.close();
 	}
 
+	public void printUserFriends(User u) {
+
+		System.out.println(u.friends.size() > 0 ? "\nFRIENDS:\n" : "YOU HAVE NO FRIENDS");
+
+		for (User u2 : u.getFriends()) {
+			System.out.print("NAME: ");
+			System.out.println(u2.getName());
+			System.out.print("USERNAME: ");
+			System.out.println(u2.getLogin());
+			System.out.print("EMAIL: ");
+			System.out.println(u2.getEmail());
+			System.out.print("ID: ");
+			System.out.println(u2.getUserId());
+			System.out.println("\n");
+		}
+	}
+
+	// Communities
+	public int createCommunity(Community community) {
+		session = sessionFactory.openSession();
+
+		try {
+			session.beginTransaction();
+			session.save(community);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} finally {
+			session.close();
+		}
+		return community.getId();
+	}
+	
+	public Community getCommunityById(int id) {
+		session = sessionFactory.openSession();
+
+		Query query = session.createQuery("from Community where id = :id");
+		query.setParameter("id", id);
+
+		Community c = (Community) query.uniqueResult();
+
+		session.close();
+		return c;
+	}
+	
+	public void deleteCommunity(Community community) {
+		session = sessionFactory.openSession();
+		
+		try {
+			session.beginTransaction();
+			session.delete(community);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} finally {
+			session.close();
+		}
+	}
+	
+	// Messages
+	public int createMessage(Message message) {
+		session = sessionFactory.openSession();
+
+		try {
+			session.beginTransaction();
+			session.save(message);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} finally {
+			session.close();
+		}
+		return message.getId();
+	}
+	
+	public Message getMessageById(int id) {
+		session = sessionFactory.openSession();
+
+		Query query = session.createQuery("from Message where id = :id");
+		query.setParameter("id", id);
+
+		Message m = (Message) query.uniqueResult();
+
+		session.close();
+		return m;
+	}
+	
+	public void deleteMessage(Message message) {
+		session = sessionFactory.openSession();
+		
+		try {
+			session.beginTransaction();
+			session.delete(message);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} finally {
+			session.close();
+		}
+	}
+	
+	public void printMessagesByUser(User u){
+		for (Message m : u.getReceivedMessages()) {
+			System.out.print("From: ");
+			System.out.println(m.getUserSender().getLogin());
+			System.out.print("Message: ");
+			System.out.println(m.getContent());
+			System.out.println("\n");
+		}
+	}
 }
