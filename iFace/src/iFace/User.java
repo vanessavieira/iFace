@@ -24,13 +24,13 @@ public class User {
 	protected String email;
 	protected String password;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "userReciever")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "userReciever")
 	protected List<Message> receivedMessages = new ArrayList<Message>();
 
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "members")
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "members")
 	protected List<Community> communities = new ArrayList<Community>();
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "owner")
 	protected List<Community> managedCommunities = new ArrayList<Community>();
 
 	@ManyToMany(fetch = FetchType.EAGER)

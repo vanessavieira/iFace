@@ -1,5 +1,6 @@
 package iFace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -20,7 +21,7 @@ public class Community {
 
 	@ManyToMany
 	@JoinTable(name = "UserCommunity", joinColumns = @JoinColumn(name = "communityId"), inverseJoinColumns = @JoinColumn(name = "userId"))
-	protected List<User> members;
+	protected List<User> members = new ArrayList<User>();
 
 	@ManyToOne
 	protected User owner;

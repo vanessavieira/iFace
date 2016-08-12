@@ -145,11 +145,13 @@ public class Main {
 								
 								community.setOwner(uManager.getUserById(uId));
 								
+								uManager.createCommunity(community);
 								// associates the community with the user
+								community.addMember(userCommunities);
 								userCommunities.addCommunities(community);		
 								userCommunities.addManagedCommunities(community);
 								
-								uManager.createCommunity(community);
+								uManager.updateInstance(userCommunities);								
 								
 								System.out.println("Community created successfully!\n");
 							}
