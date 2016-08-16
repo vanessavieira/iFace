@@ -17,7 +17,7 @@ public class Message {
 
 	@ManyToOne
 	protected User userReciever;
-
+	
 	public Message() {
 
 	}
