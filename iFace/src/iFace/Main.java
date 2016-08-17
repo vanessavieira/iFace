@@ -65,23 +65,18 @@ public class Main {
 						}
 
 						while (secondChoice != 6 && log == 1) {
-							try {
-								System.out.print("iFace: ");
-								System.out.print("1. Profile |");
-								System.out.print(" 2. Communities |");
-								System.out.print(" 3. Friends |");
-								System.out.print(" 4. Messages |");
-								System.out.print(" 5. Remove account |");
-								System.out.print(" 6. Log out\n");
-								System.out.print("-------------------------------------------------");
+							System.out.print("iFace: ");
+							System.out.print("1. Profile |");
+							System.out.print(" 2. Communities |");
+							System.out.print(" 3. Friends |");
+							System.out.print(" 4. Messages |");
+							System.out.print(" 5. Remove account |");
+							System.out.print(" 6. Log out\n");
+							System.out.print("-------------------------------------------------");
 
-								input = new Scanner(System.in);
-								secondChoice = input.nextInt();
-								input.nextLine();
-
-							} catch (InputMismatchException e) {
-								System.err.println("You shoud've typed a number\n");
-							}
+							input = new Scanner(System.in);
+							secondChoice = input.nextInt();
+							input.nextLine();
 
 							// show profile
 							if (secondChoice == 1) {
@@ -158,7 +153,7 @@ public class Main {
 									} catch (InputMismatchException e) {
 										System.err.println("You shoud've typed a number\n");
 									}
-									
+
 									// create a community
 									if (fifthChoice == 1) {
 										try {
@@ -188,8 +183,8 @@ public class Main {
 										} catch (EmptyFieldException e) {
 											System.err.println(e);
 										}
-										
-									// send message to a community
+
+										// send message to a community
 									} else if (fifthChoice == 2) {
 										try {
 											uManager.printCommunityByUser(userCommunities);
@@ -209,7 +204,7 @@ public class Main {
 											msg.setUserSender(userCommunities);
 											uManager.verifyMessageEmptyField(msg);
 											uManager.verifyCommunityMessage(userCommunities, communityId);
-											
+
 											uManager.createMessage(msg);
 											System.out.println("Message sent successfully!\n");
 
@@ -217,12 +212,12 @@ public class Main {
 											System.err.println("You shoud've typed a number\n");
 										} catch (CommunityNotFoundException e) {
 											System.err.println(e);
-										} catch (EmptyFieldException e){
+										} catch (EmptyFieldException e) {
 											System.err.println(e);
-										} catch (NotAMemberException e){
+										} catch (NotAMemberException e) {
 											System.err.println(e);
 										}
-								    // join a community
+										// join a community
 									} else if (fifthChoice == 3) {
 										try {
 											System.out.print("Type the name of the community you want to join: ");
@@ -231,21 +226,21 @@ public class Main {
 											String communityName = input.nextLine();
 
 											Community c = uManager.getCommunityByName(communityName);
-											
+
 											uManager.printCommunity(c);
-											
+
 											System.out.print("Do you want to join this community: 1. Yes | 2. No ");
-											
+
 											input = new Scanner(System.in);
 											int accept = input.nextInt();
 											input.nextLine();
-											
-											if (accept == 1){
+
+											if (accept == 1) {
 												uManager.addCommunities(userCommunities, uId, c.getId());
-												
+
 												userCommunities.addCommunities(c);
 												c.addMember(userCommunities);
-											} else if (accept == 2){
+											} else if (accept == 2) {
 												break;
 											}
 
@@ -253,12 +248,12 @@ public class Main {
 											System.err.println("You shoud've typed a number\n");
 										} catch (CommunityNotFoundException e) {
 											System.err.println(e);
-										} catch (EmptyFieldException e){
+										} catch (EmptyFieldException e) {
 											System.err.println(e);
-										} catch (AlreadyAMemberException e){
+										} catch (AlreadyAMemberException e) {
 											System.err.println(e);
 										}
-									// return menu
+										// return menu
 									} else if (fifthChoice == 4) {
 										break;
 									}
@@ -281,37 +276,35 @@ public class Main {
 									System.out.println(" User Friends \n");
 									System.out.println("Here is your friend request:");
 
-									try {
-										for (User u2 : userFriends.getFriendRequest()) {
-											System.out.print("NAME: ");
-											System.out.println(u2.getName());
-											System.out.print("USERNAME: ");
-											System.out.println(u2.getLogin());
-											System.out.print("ID: ");
-											System.out.println(u2.getUserId());
+									for (User u2 : userFriends.getFriendRequest()) {
+										System.out.print("NAME: ");
+										System.out.println(u2.getName());
+										System.out.print("USERNAME: ");
+										System.out.println(u2.getLogin());
+										System.out.print("ID: ");
+										System.out.println(u2.getUserId());
 
-											System.out.println("Do you want to add this friend?  1. Yes | 2. No");
+										System.out.println("Do you want to add this friend?  1. Yes | 2. No");
 
-											input = new Scanner(System.in);
-											accept = input.nextInt();
-											input.nextLine();
+										input = new Scanner(System.in);
+										accept = input.nextInt();
+										input.nextLine();
 
-											if (accept == 1) {
-												u2.addFriends(userFriends);
-												userFriends.addFriends(u2);
-												uManager.updateInstance(u2);
+										if (accept == 1) {
+											u2.addFriends(userFriends);
+											userFriends.addFriends(u2);
+											uManager.updateInstance(u2);
 
-												System.out.println("Friend added successfully!");
-												System.out.println("-------------------------------------------------");
-												// clear the friendRequest
-												// list
-												userFriends.friendRequest.clear();
-												uManager.updateInstance(userFriends);
-											}
+											System.out.println("Friend added successfully!");
+											System.out.println("-------------------------------------------------");
+											
+											uManager.updateInstance(userFriends);
 										}
-									} catch (InputMismatchException e) {
-										System.err.println("You shoud've typed a number\n");
 									}
+									// clear the friendRequest
+									// list
+									userFriends.friendRequest.clear();
+									uManager.updateInstance(userFriends);
 								}
 
 								if (userFriends.friends.size() == 0) {
@@ -322,61 +315,50 @@ public class Main {
 										System.out.print(" 1. Yes | 2. No\n");
 										System.out.println("-------------------------------------------------");
 
-										try {
+										input = new Scanner(System.in);
+										fourthChoice = input.nextInt();
+										input.nextLine();
+
+										if (fourthChoice == 1) {
+											int friend = 0;
+											String friendName;
+
+											System.out.print("iFace: ");
+											System.out.println(" Find Friends \n");
+											System.out.println("Write the username of your friend: ");
+
+											friendName = input.nextLine();
+
+											uManager.printUserProfile(uManager.getFriendId(friendName));
+
+											System.out.println("Write the id of your friend to add him/her: ");
+
 											input = new Scanner(System.in);
-											fourthChoice = input.nextInt();
+											friend = input.nextInt();
 											input.nextLine();
 
-											if (fourthChoice == 1) {
-												int friend = 0;
-												String friendName;
+											try {
+												User u = uManager.getUserById(friend);
 
-												System.out.print("iFace: ");
-												System.out.println(" Find Friends \n");
-												System.out.println("Write the username of your friend: ");
+												uManager.addFriend(u, friend, uId);
+												u.addFriendRequest(userFriends);
+												uManager.updateInstance(u);
+												uManager.updateInstance(userFriends);
 
-												friendName = input.nextLine();
+												System.out.println("Friend request made successfully!");
+												System.out.println("-------------------------------------------------");
 
-												try {
-													uManager.printUserProfile(uManager.getFriendId(friendName));
-
-													System.out.println("Write the id of your friend to add him/her: ");
-
-													try {
-														input = new Scanner(System.in);
-														friend = input.nextInt();
-														input.nextLine();
-
-													} catch (InputMismatchException e) {
-														System.err.println("You shoud've typed a number\n");
-													}
-													try {
-														User u = uManager.getUserById(friend);
-
-														uManager.addFriend(u, friend, uId);
-														u.addFriendRequest(userFriends);
-														uManager.updateInstance(u);
-														uManager.updateInstance(userFriends);
-
-														System.out.println("Friend request made successfully!");
-														System.out.println(
-																"-------------------------------------------------");
-
-													} catch (CantAddYourselfException e) {
-														System.err.println(e);
-													} catch (AlreadySentRequestException e) {
-														System.err.println(e);
-													} catch (AlreadyFriendException e) {
-														System.err.println(e);
-													}
-
-												} catch (UserNotFoundException e) {
-													System.err.println(e);
-												}
+											} catch (CantAddYourselfException e) {
+												System.err.println(e);
+											} catch (AlreadySentRequestException e) {
+												System.err.println(e);
+											} catch (AlreadyFriendException e) {
+												System.err.println(e);
 											}
 
-										} catch (InputMismatchException e) {
-											System.err.println("You shoud've typed a number\n");
+											catch (UserNotFoundException e) {
+												System.err.println(e);
+											}
 										}
 
 									}
@@ -407,34 +389,27 @@ public class Main {
 
 													System.out.println("Write the id of your friend to add him/her: ");
 
-													try {
-														input = new Scanner(System.in);
-														friend = input.nextInt();
-														input.nextLine();
+													input = new Scanner(System.in);
+													friend = input.nextInt();
+													input.nextLine();
 
-													} catch (InputMismatchException e) {
-														System.err.println("You shoud've typed a number\n");
-													}
-													try {
-														User u = uManager.getUserById(friend);
+													User u = uManager.getUserById(friend);
 
-														uManager.addFriend(u, friend, uId);
-														u.addFriendRequest(userFriends);
-														uManager.updateInstance(u);
-														uManager.updateInstance(userFriends);
+													uManager.addFriend(u, friend, uId);
+													u.addFriendRequest(userFriends);
+													uManager.updateInstance(u);
+													uManager.updateInstance(userFriends);
 
-														System.out.println("Friend request made successfully!");
-														System.out.println(
-																"-------------------------------------------------");
+													System.out.println("Friend request made successfully!");
+													System.out.println(
+															"-------------------------------------------------");
 
-													} catch (CantAddYourselfException e) {
-														System.err.println(e);
-													} catch (AlreadySentRequestException e) {
-														System.err.println(e);
-													} catch (AlreadyFriendException e) {
-														System.err.println(e);
-													}
-
+												} catch (CantAddYourselfException e) {
+													System.err.println(e);
+												} catch (AlreadySentRequestException e) {
+													System.err.println(e);
+												} catch (AlreadyFriendException e) {
+													System.err.println(e);
 												} catch (UserNotFoundException e) {
 													System.err.println(e);
 												}
@@ -555,6 +530,7 @@ public class Main {
 						System.err.println("-------------------------------------------------");
 					}
 				} catch (Exception e) {
+					//System.err.println(e.getMessage());
 					System.err.println("Ops, something is wrong.\n We're working to fix that for you. \n");
 				}
 			}
